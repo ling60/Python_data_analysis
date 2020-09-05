@@ -1,37 +1,71 @@
-## Welcome to GitHub Pages
+# Python for Data Analysis
 
-You can use the [editor on GitHub](https://github.com/ling60/Python_data_analysis/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+这是一系列关于使用Python对社科类数据进行分析的小教程。Enjory and happy coding
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Python环境下载及安装
 
-### Markdown
+### 可以参考后面的网址，进行安装 https://www.runoob.com/python/python-install.html
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+或参考后面的内容
 
-```markdown
-Syntax highlighted code block
+### （2个选择）
 
-# Header 1
-## Header 2
-### Header 3
+1. Anaconda
 
-- Bulleted
-- List
+我们推荐直接下载Anaconda，这是一个 集合了Python程序以及200+Python第三方package的应用包，如果后期使用Python较多，可以尽量安装这个。
 
-1. Numbered
-2. List
+Anaconda 下载及安装（如果连外网比较快的话，建议去官网，因为官网能够直接根据你的系统选择你需要下载的安装包）：
 
-**Bold** and _Italic_ and `Code` text
+- 官方下载网址：
 
-[Link](url) and ![Image](src)
+https://www.anaconda.com/distribution/
+
+- 清华镜像，国内网，速度较快
+
+https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/?C=M&O=A 
+
+
+
+根据你自己的操作系统版本，挑选一个下载。最下面的一个是64位的windows，这个可能是大部分同学的选择。
+
+2. Anaconda安装，按照提示一步步点下去就可以
+
+3. Python单独安装
+
+   官方网站直接下载：https://www.python.org/downloads/
+
+   **仅安装了Python的同学，请再安装一下jupyter notebook。** 详细安装说明请见（https://jupyter.org/install）
+   
+   具体方法如下：
+   
+   a. 在Windows开始菜单旁，搜索cmd
+   
+
+   
+   b. 点击 命令提示符，然后输入pip
+   
+
+
+如果没有出现图片上的内容，应该是Python的路径没有设置好。可参考https://www.runoob.com/python/python-install.html 或进入到Python目录下再输入 pip
+
+c. 安装某个package的命令为
+
+pip install pcknm(包的名字)，如果pip无法正常运行，请按照上面关于环境变量设置的说明，在环境变量中添加pip路径。
+
+比如，安装 notebook就用:
+
+```Python
+pip install notebook
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
 
-### Jekyll Themes
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/ling60/Python_data_analysis/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+本课程额外安装notebook应该就够用了，如果有需要后期可以再装
 
-### Support or Contact
+#### 用anaconda安装新的package
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+默认环境下，anaconda 已经内置了200+的packages，大家可以通过window开始菜单点击anaconda navigator 查看里面都安装了哪些packages（包）
+
+
+
+如果需要的package不在里面，则点击 anaconda prompt，然后在里面输入 conda install pkgnm（包名），如果conda 上面没有找到包，那么可以用上面的 pip来安装
