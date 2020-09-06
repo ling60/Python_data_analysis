@@ -1,5 +1,7 @@
 # Jupyter Notebook安装、启动、使用教程
 
+
+
 本文主要给大家介绍Jupyter notebook的安装、启动和使用。Jupyter Notebook是一个常见的Python IDE，同时兼具Markdown（文本编辑）及code（代码编写）的功能，非常适合初学者使用。**notebook文件的后缀名（扩展名）是 .ipynb**
 
 

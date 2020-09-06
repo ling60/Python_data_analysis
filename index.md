@@ -1,5 +1,7 @@
 # Python for Data Analysis
 
+-Ling Liu, 西南财经大学（SWUFE）
+
 This repository is used to store the lecture notes of my 'Python for Data Analysis' course.
 The course focuses on using Python to collect, clean, analyze, and report data in social science area.
 
@@ -20,7 +22,7 @@ Currently (2020.9.5) all notes will be written in Chinese.
 
 本期课程主要目的是为大家简单的介绍数据科学这个领域，Python的简单用法，以及对课程进行一些简单的介绍。
 - 课件(to be updated)
-- [Python、Anaconda的安装方法](Python环境下载及安装教程.md)
-- [Python环境变量设置及第三方包的安装介绍](Python环境变量设置及第三方包的安装介绍.md)
-- [Jupyter Notebook教程](Jupyter Notebook教程.md)
+- [Anaconda的安装方法](Anaconda_installsetup.md)
+- [Jupyter Notebook教程](Jnb_tutorial..md)
 
+more to be added...
