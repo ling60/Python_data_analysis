@@ -19,7 +19,7 @@ Currently (2020.9.5) all notes will be written in Chinese.
 ### Lecture 1
 
 本期课程主要目的是为大家简单的介绍数据科学这个领域，Python的简单用法，以及对课程进行一些简单的介绍。
-- 课件(to be updated)
+- [课件](\slides\UG_week1_introudction.pdf)
 - [Anaconda的安装方法](Anaconda_installsetup.md)
 - [Jupyter Notebook教程](Jnb_tutorial.md)
 
