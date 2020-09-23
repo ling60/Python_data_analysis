@@ -19,8 +19,18 @@ Currently (2020.9.5) all notes will be written in Chinese.
 ### Lecture 1
 
 本期课程主要目的是为大家简单的介绍数据科学这个领域，Python的简单用法，以及对课程进行一些简单的介绍。
-- [课件](\slides\UG_week1_introudction.pdf)
-- [Anaconda的安装方法](Anaconda_installsetup.md)
-- [Jupyter Notebook教程](Jnb_tutorial.md)
+- [课件](slides\UG_week1_introudction.pdf)
+- [Anaconda的安装方法](help_docs\Anaconda_installsetup.md)
+- [Jupyter Notebook教程](help_docs\Jnb_tutorial.md)
 
-more to be added...
+### Lecture 2
+
+这次课程的内容主要为回顾Python的基础数据类型
+
+- [课件](slides\Week2_python_variables.md)
+
+### Lecture 3
+
+这次课程内容主要是介绍文本分析相关内容
+
+- [课件](slides\Week3_text_analysis.md)
