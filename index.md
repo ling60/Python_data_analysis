@@ -27,10 +27,10 @@ Currently (2020.9.5) all notes will be written in Chinese.
 
 这次课程的内容主要为回顾Python的基础数据类型
 
-- [课件](slides\Week2_python_variables.md)
+- [课件](slides\Week2_python_variables.html)
 
 ### Lecture 3
 
 这次课程内容主要是介绍文本分析相关内容
 
-- [课件](slides\Week3_text_analysis.md)
+- [课件](slides\Week3_text_analysis.html)
