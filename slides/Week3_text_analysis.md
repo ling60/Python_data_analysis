@@ -160,7 +160,19 @@ Some References：
 A related package:
 [Gensim](https://radimrehurek.com/gensim/)
 
+当前有很多训练好的开源word vector的模型供大家下载，比如fasttext等
+
+可以用如下方法对这些model进行调用，甚至是“更新”。具体参见：
+https://radimrehurek.com/gensim/models/keyedvectors.html
+
 
 ```python
+from gensim.test.utils import datapath
 
+wv_from_text = KeyedVectors.load_word2vec_format('w2v_model/wiki-news-300d-1M.vec')
+```
+
+
+```python
+wv_from_text.most_similar(positive=['woman', 'king'], negative=['man'])
 ```
