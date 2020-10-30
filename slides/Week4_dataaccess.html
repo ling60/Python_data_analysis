@@ -13085,35 +13085,6 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Text-analysis">Text analysis<a class="anchor-link" href="#Text-analysis">&#182;</a></h3><h4 id="pre-trained-models">pre-trained models<a class="anchor-link" href="#pre-trained-models">&#182;</a></h4><p>当前有很多训练好的开源word vector的模型供大家下载，比如fasttext等:<a href="https://fasttext.cc/docs/en/english-vectors.html">https://fasttext.cc/docs/en/english-vectors.html</a></p>
-<p>可以用如下方法对这些model进行调用，甚至是“更新”。具体参见：
-<a href="https://radimrehurek.com/gensim/models/keyedvectors.html">https://radimrehurek.com/gensim/models/keyedvectors.html</a></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">gensim.test.utils</span> <span class="kn">import</span> <span class="n">datapath</span>
-<span class="kn">from</span> <span class="nn">gensim.models</span> <span class="kn">import</span> <span class="n">KeyedVectors</span> 
-
-<span class="c1"># 引号内是你所下载的vector文件（.vec）的地址</span>
-<span class="n">wv_from_text</span> <span class="o">=</span> <span class="n">KeyedVectors</span><span class="o">.</span><span class="n">load_word2vec_format</span><span class="p">(</span><span class="s1">&#39;w2v_model/wiki-news-300d-1M.vec&#39;</span><span class="p">)</span>
-
-<span class="n">wv_from_text</span><span class="o">.</span><span class="n">most_similar</span><span class="p">(</span><span class="n">positive</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;woman&#39;</span><span class="p">,</span> <span class="s1">&#39;king&#39;</span><span class="p">],</span> <span class="n">negative</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;man&#39;</span><span class="p">])</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Data-analysis-processs">Data analysis processs<a class="anchor-link" href="#Data-analysis-processs">&#182;</a></h2><ol>
 <li>Problem Define</li>
 <li>Data collection</li>
