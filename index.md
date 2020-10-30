@@ -38,4 +38,4 @@ Currently (2020.9.5) all notes will be written in Chinese.
 ### Lecture 4
 这次课程的内容是讲解数据获取的一些相关问题，如有哪些常见数据库，以及基础的网络爬虫的介绍
 
--[课件](slides\Week4_dataaccess.html)
+- [课件](slides\Week4_dataaccess.html)
