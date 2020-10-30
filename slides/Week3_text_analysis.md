@@ -160,19 +160,42 @@ Some References：
 A related package:
 [Gensim](https://radimrehurek.com/gensim/)
 
-当前有很多训练好的开源word vector的模型供大家下载，比如fasttext等
+#### pre-trained models
+
+当前有很多训练好的开源word vector的模型供大家下载，比如fasttext等:https://fasttext.cc/docs/en/english-vectors.html
 
 可以用如下方法对这些model进行调用，甚至是“更新”。具体参见：
 https://radimrehurek.com/gensim/models/keyedvectors.html
 
 
 ```python
+"""
+本部分内容为一个利用gensim package对从fasttext下载的语料库进行分析的简单例子。
+most_similar的意思是寻找跟关键词或关键词组合的最接近的词。
+在本例中，我们所做的相当于： King - Man + Woman = ?
+模型结果最接近的与人类的想法相似：Queen
+"""
 from gensim.test.utils import datapath
+from gensim.models import KeyedVectors 
 
+# 引号内是你所下载的vector文件（.vec）的地址
 wv_from_text = KeyedVectors.load_word2vec_format('w2v_model/wiki-news-300d-1M.vec')
-```
 
-
-```python
 wv_from_text.most_similar(positive=['woman', 'king'], negative=['man'])
 ```
+
+
+
+
+    [('queen', 0.7515910863876343),
+     ('monarch', 0.6741327047348022),
+     ('princess', 0.6713887453079224),
+     ('kings', 0.6698989868164062),
+     ('kingdom', 0.5971318483352661),
+     ('royal', 0.592106282711029),
+     ('uncrowned', 0.5911506414413452),
+     ('prince', 0.5909028649330139),
+     ('lady', 0.5904011726379395),
+     ('monarchs', 0.5884358286857605)]
+
+
