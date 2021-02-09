@@ -10,7 +10,7 @@ a. 在Windows开始菜单旁，搜索cmd
 
 b. 点击 命令提示符，然后输入pip
 
-![image-20200220154710156](C:\Users\ling\AppData\Roaming\Typora\typora-user-images\image-20200220154710156.png)
+![image-20200220154710156](pics\image-20200220154710156.png)
 
 如果没有出现图片上的内容，应该是Python的路径没有设置好。可参考https://www.runoob.com/python/python-install.html 修改环境变量，或进入到Python目录下再输入 pip
 
