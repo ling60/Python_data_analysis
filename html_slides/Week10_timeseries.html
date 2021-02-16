@@ -1,0 +1,950 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>Week10_timeseries.md</title><style type='text/css'>html, body {overflow-x: initial !important;}.CodeMirror { height: auto; }
+.CodeMirror-scroll { overflow-y: hidden; overflow-x: auto; }
+.CodeMirror-lines { padding: 4px 0px; }
+.CodeMirror pre { }
+.CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler { background-color: white; }
+.CodeMirror-gutters { border-right: 1px solid rgb(221, 221, 221); background-color: rgb(247, 247, 247); white-space: nowrap; }
+.CodeMirror-linenumbers { }
+.CodeMirror-linenumber { padding: 0px 3px 0px 5px; text-align: right; color: rgb(153, 153, 153); }
+.CodeMirror div.CodeMirror-cursor { border-left: 1px solid black; z-index: 3; }
+.CodeMirror div.CodeMirror-secondarycursor { border-left: 1px solid silver; }
+.CodeMirror.cm-keymap-fat-cursor div.CodeMirror-cursor { width: auto; border: 0px; background: rgb(119, 238, 119); z-index: 1; }
+.CodeMirror div.CodeMirror-cursor.CodeMirror-overwrite { }
+.cm-tab { display: inline-block; }
+.cm-s-typora-default .cm-header, .cm-s-typora-default .cm-property { color: rgb(217, 79, 138); }
+.cm-s-typora-default pre.cm-header1:not(.cm-atom) :not(.cm-overlay) { font-size: 2rem; line-height: 2rem; }
+.cm-s-typora-default pre.cm-header2:not(.cm-atom) :not(.cm-overlay) { font-size: 1.4rem; line-height: 1.4rem; }
+.cm-s-typora-default .cm-atom, .cm-s-typora-default .cm-number { color: rgb(149, 132, 134); }
+.cm-s-typora-default .cm-table-row, .cm-s-typora-default .cm-block-start { font-family: monospace; }
+.cm-s-typora-default .cm-comment, .cm-s-typora-default .cm-code { color: rgb(74, 90, 159); font-family: monospace; }
+.cm-s-typora-default .cm-tag { color: rgb(169, 68, 66); }
+.cm-s-typora-default .cm-string { color: rgb(126, 134, 169); }
+.cm-s-typora-default .cm-link { color: rgb(196, 122, 15); text-decoration: underline; }
+.cm-s-typora-default .cm-variable-2, .cm-s-typora-default .cm-variable-1 { color: inherit; }
+.cm-s-typora-default .cm-overlay { font-size: 1rem; font-family: monospace; }
+.CodeMirror.cm-s-typora-default div.CodeMirror-cursor { border-left: 3px solid rgb(228, 98, 154); }
+.cm-s-typora-default .CodeMirror-activeline-background { left: -60px; right: -30px; background: rgba(204, 204, 204, 0.2); }
+.cm-s-typora-default .CodeMirror-gutters { border-right: none; background-color: inherit; }
+.cm-s-typora-default .cm-trailing-space-new-line::after, .cm-startspace::after, .cm-starttab .cm-tab::after { content: "•"; position: absolute; left: 0px; opacity: 0; font-family: LetterGothicStd, monospace; }
+.os-windows .cm-startspace::after, .os-windows .cm-starttab .cm-tab::after { left: -0.1em; }
+.cm-starttab .cm-tab::after { content: " "; }
+.cm-startspace, .cm-tab, .cm-starttab, .cm-trailing-space-a, .cm-trailing-space-b, .cm-trailing-space-new-line { font-family: monospace; position: relative; }
+.cm-s-typora-default .cm-trailing-space-new-line::after { content: "↓"; opacity: 0.3; }
+.cm-s-inner .cm-keyword { color: rgb(119, 0, 136); }
+.cm-s-inner .cm-atom, .cm-s-inner.cm-atom { color: rgb(34, 17, 153); }
+.cm-s-inner .cm-number { color: rgb(17, 102, 68); }
+.cm-s-inner .cm-def { color: rgb(0, 0, 255); }
+.cm-s-inner .cm-variable { color: black; }
+.cm-s-inner .cm-variable-2 { color: rgb(0, 85, 170); }
+.cm-s-inner .cm-variable-3 { color: rgb(0, 136, 85); }
+.cm-s-inner .cm-property { color: black; }
+.cm-s-inner .cm-operator { color: rgb(152, 26, 26); }
+.cm-s-inner .cm-comment, .cm-s-inner.cm-comment { color: rgb(170, 85, 0); }
+.cm-s-inner .cm-string { color: rgb(170, 17, 17); }
+.cm-s-inner .cm-string-2 { color: rgb(255, 85, 0); }
+.cm-s-inner .cm-meta { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-qualifier { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-builtin { color: rgb(51, 0, 170); }
+.cm-s-inner .cm-bracket { color: rgb(153, 153, 119); }
+.cm-s-inner .cm-tag { color: rgb(17, 119, 0); }
+.cm-s-inner .cm-attribute { color: rgb(0, 0, 204); }
+.cm-s-inner .cm-header, .cm-s-inner.cm-header { color: blue; }
+.cm-s-inner .cm-quote, .cm-s-inner.cm-quote { color: rgb(0, 153, 0); }
+.cm-s-inner .cm-hr, .cm-s-inner.cm-hr { color: rgb(153, 153, 153); }
+.cm-s-inner .cm-link, .cm-s-inner.cm-link { color: rgb(0, 0, 204); }
+.cm-negative { color: rgb(221, 68, 68); }
+.cm-positive { color: rgb(34, 153, 34); }
+.cm-header, .cm-strong { font-weight: bold; }
+.cm-del { text-decoration: line-through; }
+.cm-em { font-style: italic; }
+.cm-link { text-decoration: underline; }
+.cm-error { color: rgb(255, 0, 0); }
+.cm-invalidchar { color: rgb(255, 0, 0); }
+.cm-constant { color: rgb(38, 139, 210); }
+.cm-defined { color: rgb(181, 137, 0); }
+div.CodeMirror span.CodeMirror-matchingbracket { color: rgb(0, 255, 0); }
+div.CodeMirror span.CodeMirror-nonmatchingbracket { color: rgb(255, 34, 34); }
+.cm-s-inner .CodeMirror-activeline-background { background: inherit; }
+.CodeMirror { position: relative; overflow: hidden; }
+.CodeMirror-scroll { margin-bottom: -30px; margin-right: -30px; padding-bottom: 30px; padding-right: 30px; height: 100%; outline: none; position: relative; box-sizing: content-box; }
+.CodeMirror-sizer { position: relative; }
+.CodeMirror-vscrollbar, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler { position: absolute; z-index: 6; display: none; }
+.CodeMirror-vscrollbar { right: 0px; top: 0px; overflow-x: hidden; overflow-y: scroll; }
+.CodeMirror-hscrollbar { bottom: 0px; left: 0px; overflow-y: hidden; overflow-x: scroll; }
+.CodeMirror-scrollbar-filler { right: 0px; bottom: 0px; }
+.CodeMirror-gutter-filler { left: 0px; bottom: 0px; }
+.CodeMirror-gutters { position: absolute; left: 0px; top: 0px; padding-bottom: 30px; z-index: 3; }
+.CodeMirror-gutter { white-space: normal; height: 100%; box-sizing: content-box; padding-bottom: 30px; margin-bottom: -32px; display: inline-block; }
+.CodeMirror-gutter-elt { position: absolute; cursor: default; z-index: 4; }
+.CodeMirror-lines { cursor: text; }
+.CodeMirror pre { border-radius: 0px; border-width: 0px; background: transparent; font-family: inherit; font-size: inherit; margin: 0px; white-space: pre; word-wrap: normal; color: inherit; z-index: 2; position: relative; overflow: visible; }
+.CodeMirror-wrap pre { word-wrap: break-word; white-space: pre-wrap; word-break: normal; }
+.CodeMirror-code pre { border-right: 30px solid transparent; width: fit-content; }
+.CodeMirror-wrap .CodeMirror-code pre { border-right: none; width: auto; }
+.CodeMirror-linebackground { position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; z-index: 0; }
+.CodeMirror-linewidget { position: relative; z-index: 2; overflow: auto; }
+.CodeMirror-widget { }
+.CodeMirror-wrap .CodeMirror-scroll { overflow-x: hidden; }
+.CodeMirror-measure { position: absolute; width: 100%; height: 0px; overflow: hidden; visibility: hidden; }
+.CodeMirror-measure pre { position: static; }
+.CodeMirror div.CodeMirror-cursor { position: absolute; visibility: hidden; border-right: none; width: 0px; }
+.CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+.CodeMirror-focused div.CodeMirror-cursor { visibility: inherit; }
+.CodeMirror-selected { background: rgb(217, 217, 217); }
+.CodeMirror-focused .CodeMirror-selected { background: rgb(215, 212, 240); }
+.cm-searching { background: rgba(255, 255, 0, 0.4); }
+.CodeMirror span { }
+@media print { 
+  .CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+}
+.CodeMirror-lint-markers { width: 16px; }
+.CodeMirror-lint-tooltip { background-color: infobackground; border: 1px solid black; border-radius: 4px; color: infotext; font-family: monospace; overflow: hidden; padding: 2px 5px; position: fixed; white-space: pre-wrap; z-index: 10000; max-width: 600px; opacity: 0; transition: opacity 0.4s; font-size: 0.8em; }
+.CodeMirror-lint-mark-error, .CodeMirror-lint-mark-warning { background-position: left bottom; background-repeat: repeat-x; }
+.CodeMirror-lint-mark-error { background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAYAAAC09K7GAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDw4cOCW1/KIAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAHElEQVQI12NggIL/DAz/GdA5/xkY/qPKMDAwAADLZwf5rvm+LQAAAABJRU5ErkJggg=="); }
+.CodeMirror-lint-marker-error, .CodeMirror-lint-marker-warning { background-position: center center; background-repeat: no-repeat; cursor: pointer; display: inline-block; height: 16px; width: 16px; vertical-align: middle; position: relative; }
+.CodeMirror-lint-message-error, .CodeMirror-lint-message-warning { padding-left: 18px; background-position: left top; background-repeat: no-repeat; }
+.CodeMirror-lint-marker-error, .CodeMirror-lint-message-error { background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAHlBMVEW7AAC7AACxAAC7AAC7AAAAAAC4AAC5AAD///+7AAAUdclpAAAABnRSTlMXnORSiwCK0ZKSAAAATUlEQVR42mWPOQ7AQAgDuQLx/z8csYRmPRIFIwRGnosRrpamvkKi0FTIiMASR3hhKW+hAN6/tIWhu9PDWiTGNEkTtIOucA5Oyr9ckPgAWm0GPBog6v4AAAAASUVORK5CYII="); }
+.CodeMirror-lint-marker-warning, .CodeMirror-lint-message-warning { background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAANlBMVEX/uwDvrwD/uwD/uwD/uwD/uwD/uwD/uwD/uwD6twD/uwAAAADurwD2tQD7uAD+ugAAAAD/uwDhmeTRAAAADHRSTlMJ8mN1EYcbmiixgACm7WbuAAAAVklEQVR42n3PUQqAIBBFUU1LLc3u/jdbOJoW1P08DA9Gba8+YWJ6gNJoNYIBzAA2chBth5kLmG9YUoG0NHAUwFXwO9LuBQL1giCQb8gC9Oro2vp5rncCIY8L8uEx5ZkAAAAASUVORK5CYII="); }
+.CodeMirror-lint-marker-multiple { background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAMAAADzjKfhAAAACVBMVEUAAAAAAAC/v7914kyHAAAAAXRSTlMAQObYZgAAACNJREFUeNo1ioEJAAAIwmz/H90iFFSGJgFMe3gaLZ0od+9/AQZ0ADosbYraAAAAAElFTkSuQmCC"); background-repeat: no-repeat; background-position: right bottom; width: 100%; height: 100%; }
+
+
+html { font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); }
+body { margin: 0px; padding: 0px; height: auto; bottom: 0px; top: 0px; left: 0px; right: 0px; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 1rem; line-height: 1.42857; overflow-x: hidden; background: inherit; }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { background: rgb(181, 214, 252); text-shadow: none; }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; word-wrap: break-word; position: relative; padding-bottom: 70px; white-space: pre-wrap; overflow-x: auto; }
+.for-image #write { padding-left: 8px; padding-right: 8px; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+@media screen and (max-width: 500px) { 
+  body.typora-export { padding-left: 0px; padding-right: 0px; }
+  .CodeMirror-sizer { margin-left: 0px !important; }
+  .CodeMirror-gutters { display: none !important; }
+}
+.typora-export #write { margin: 0px auto; }
+#write > p:first-child, #write > ul:first-child, #write > ol:first-child, #write > pre:first-child, #write > blockquote:first-child, #write > div:first-child, #write > table:first-child { margin-top: 30px; }
+#write li > table:first-child { margin-top: -20px; }
+img { max-width: 100%; vertical-align: middle; }
+input, button, select, textarea { color: inherit; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+::before, ::after, * { box-sizing: border-box; }
+#write p, #write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write div, #write pre { width: inherit; }
+#write p, #write h1, #write h2, #write h3, #write h4, #write h5, #write h6 { position: relative; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.4rem; }
+h5 { font-size: 1.2rem; }
+h6 { font-size: 1rem; }
+p { -webkit-margin-before: 1rem; -webkit-margin-after: 1rem; -webkit-margin-start: 0px; -webkit-margin-end: 0px; }
+.mathjax-block { margin-top: 0px; margin-bottom: 0px; -webkit-margin-before: 0rem; -webkit-margin-after: 0rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: bold; font-style: italic; }
+a { cursor: pointer; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; margin: 4px 0px 0px; }
+tr { break-inside: avoid; break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; break-inside: auto; text-align: left; }
+table.md-table td { min-width: 80px; }
+.CodeMirror-gutters { border-right: 0px; background-color: inherit; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+pre { white-space: pre-wrap; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences { font-size: 0.9rem; display: block; break-inside: avoid; text-align: left; overflow: visible; white-space: pre; background: inherit; position: relative !important; }
+.md-diagram-panel { width: 100%; margin-top: 10px; text-align: center; padding-top: 0px; padding-bottom: 8px; overflow-x: auto; }
+.md-fences .CodeMirror.CodeMirror-wrap { top: -1.6em; margin-bottom: -1.6em; }
+.md-fences.mock-cm { white-space: pre-wrap; }
+.show-fences-line-number .md-fences { padding-left: 0px; }
+.show-fences-line-number .md-fences.mock-cm { padding-left: 40px; }
+.footnotes { opacity: 0.8; font-size: 0.9rem; padding-top: 1em; padding-bottom: 1em; }
+.footnotes + .footnotes { margin-top: -1em; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; background: transparent; text-decoration: none; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: normal; text-align: left; box-sizing: content-box; direction: ltr; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li p, li .mathjax-block { margin: 0.5rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; }
+@media print { 
+  html, body { height: 100%; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  h1, h2, h3, h4, h5, h6 { break-after: avoid-page; orphans: 2; }
+  p { orphans: 4; }
+  html.blink-to-pdf { font-size: 13px; }
+  .typora-export #write { padding-left: 1cm; padding-right: 1cm; }
+  .typora-export #write::after { height: 0px; }
+  @page { margin: 20mm 0mm; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+pre.md-meta-block { font-size: 0.8rem; min-height: 2.86rem; white-space: pre-wrap; background: rgb(204, 204, 204); display: block; overflow-x: hidden; }
+p .md-image:only-child { display: inline-block; width: 100%; text-align: center; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.mathjax-block { white-space: pre; overflow: hidden; width: 100%; }
+p + .mathjax-block { margin-top: -1.143rem; }
+.mathjax-block:not(:empty)::after { display: none; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus { outline: none; box-shadow: none; }
+.task-list { list-style-type: none; }
+.task-list-item { position: relative; padding-left: 1em; }
+.task-list-item input { position: absolute; top: 0px; left: 0px; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc::after, .md-toc-content::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); text-decoration: none; }
+.md-toc-inner:hover { }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: bold; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+@media screen and (max-width: 48em) { 
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h6 .md-toc-inner { margin-left: 8em; }
+}
+a.md-toc-inner { font-size: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+.md-tag { opacity: 0.5; }
+.md-comment { color: rgb(162, 127, 3); opacity: 0.8; font-family: monospace; }
+code { text-align: left; }
+h1 .md-tag, h2 .md-tag, h3 .md-tag, h4 .md-tag, h5 .md-tag, h6 .md-tag { font-weight: initial; opacity: 0.35; }
+a.md-print-anchor { border-width: initial !important; border-style: none !important; border-color: initial !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: none !important; background: transparent !important; text-decoration: initial !important; text-shadow: initial !important; }
+.md-inline-math .MathJax_SVG .noError { display: none !important; }
+.mathjax-block .MathJax_SVG_Display { text-align: center; margin: 1em 0em; position: relative; text-indent: 0px; max-width: none; max-height: none; min-height: 0px; min-width: 100%; width: auto; display: block !important; }
+.MathJax_SVG_Display, .md-inline-math .MathJax_SVG_Display { width: auto; margin: inherit; display: inline-block !important; }
+.MathJax_SVG .MJX-monospace { font-family: monospace; }
+.MathJax_SVG .MJX-sans-serif { font-family: sans-serif; }
+.MathJax_SVG { display: inline; font-style: normal; font-weight: normal; line-height: normal; zoom: 90%; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px; }
+.MathJax_SVG * { transition: none; }
+
+
+@font-face { font-family: "PT Serif"; font-style: normal; font-weight: normal; src: local("PT Serif"), local("PTSerif-Regular"), url("./newsprint/PT_Serif-Web-Regular.ttf"); }
+@font-face { font-family: "PT Serif"; font-style: italic; font-weight: normal; src: local("PT Serif"), local("PTSerif-Italic"), url("./newsprint/PT_Serif-Web-Italic.ttf"); }
+@font-face { font-family: "PT Serif"; font-style: normal; font-weight: bold; src: local("PT Serif"), local("PTSerif-Bold"), url("./newsprint/PT_Serif-Web-Bold.ttf"); }
+@font-face { font-family: "PT Serif"; font-style: italic; font-weight: bold; src: local("PT Serif"), local("PTSerif-BoldItalic"), url("./newsprint/PT_Serif-Web-BoldItalic.ttf"); }
+html { font-size: 16px; }
+html, body { background-color: rgb(243, 242, 238); font-family: "PT Serif", "Times New Roman", Times; color: rgb(31, 9, 9); line-height: 1.5em; }
+#write { max-width: 40em; }
+ol, ul { list-style: none; }
+blockquote, q { quotes: none; }
+blockquote::before, blockquote::after, q::before, q::after { content: none; }
+table { border-collapse: collapse; border-spacing: 0px; }
+h1, h2, h3, h4, h5, h6 { font-weight: bold; }
+h1 { font-size: 1.875em; line-height: 1.6em; margin-top: 2em; }
+h2, h3 { font-size: 1.3125em; line-height: 1.15; margin-top: 2.28571em; margin-bottom: 1.15em; }
+h3 { font-weight: normal; }
+h4 { font-size: 1.125em; margin-top: 2.67em; }
+h5, h6 { font-size: 1em; }
+h1 { border-bottom: 1px solid; margin-bottom: 1.875em; padding-bottom: 0.8125em; }
+a { text-decoration: none; color: rgb(6, 85, 136); }
+a:hover, a:active { text-decoration: underline; }
+p, blockquote, .md-fences { margin-bottom: 1.5em; }
+h1, h2, h3, h4, h5, h6 { margin-bottom: 1.5em; }
+blockquote { font-style: italic; border-left: 5px solid; margin-left: 2em; padding-left: 1em; }
+ul, ol { margin: 0px 0px 1.5em 1.5em; }
+ol li { list-style-type: decimal; list-style-position: outside; }
+ul li { list-style-type: disc; list-style-position: outside; }
+.md-meta, .md-before, .md-after { color: rgb(153, 153, 153); }
+table { margin-bottom: 1.5em; font-size: 1em; }
+thead th, tfoot th { padding: 0.25em 0.25em 0.25em 0.4em; text-transform: uppercase; }
+th { text-align: left; }
+td { vertical-align: top; padding: 0.25em 0.25em 0.25em 0.4em; }
+code, .md-fences { background-color: rgb(218, 218, 218); padding-left: 1ch; padding-right: 1ch; }
+.md-fences { margin-left: 2em; margin-bottom: 3em; }
+.md-fences .CodeMirror.CodeMirror-wrap { top: -0.8em; }
+pre, code, tt { font-size: 0.875em; line-height: 1.71428em; }
+h1 { line-height: 1.3em; font-weight: normal; margin-bottom: 0.5em; }
+p + ul, p + ol { margin-top: -1em; }
+h3 + ul, h4 + ul, h5 + ul, h6 + ul, h3 + ol, h4 + ol, h5 + ol, h6 + ol { margin-top: 0.5em; }
+li > ul, li > ol { margin-top: inherit; }
+h2, h3 { margin-bottom: 0.75em; }
+hr { border-top: none; border-right: none; border-bottom: 1px solid; border-left: none; }
+h1 { border-color: rgb(197, 197, 197); }
+blockquote { border-color: rgb(186, 186, 186); color: rgb(101, 101, 101); }
+thead.md-table-edit { background-color: transparent; }
+thead { background-color: rgb(218, 218, 218); }
+tr:nth-child(2n) { background: rgb(232, 231, 231); }
+hr { border-color: rgb(197, 197, 197); }
+.task-list { padding-left: 1rem; }
+.task-list-item { padding-left: 1.5rem; list-style-type: none; }
+.task-list-item input::before { content: "√"; display: inline-block; width: 1.25rem; height: 1.6rem; vertical-align: middle; text-align: center; color: rgb(221, 221, 221); background-color: rgb(243, 242, 238); }
+.task-list-item input:checked::before, .task-list-item input[checked]::before { color: inherit; }
+#write pre.md-meta-block { min-height: 1.875rem; color: rgb(85, 85, 85); border: 0px; background: transparent; margin-left: 1em; margin-top: 1em; }
+.md-image > .md-meta { color: rgb(155, 81, 70); }
+.md-image > .md-meta { font-family: Menlo, "Ubuntu Mono", Consolas, "Courier New", "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif; }
+#write > h3.md-focus::before { left: -1.5rem; color: rgb(153, 153, 153); border-color: rgb(153, 153, 153); }
+#write > h4.md-focus::before { left: -1.5rem; top: 0.25rem; color: rgb(153, 153, 153); border-color: rgb(153, 153, 153); }
+#write > h5.md-focus::before { left: -1.5rem; color: rgb(153, 153, 153); border-color: rgb(153, 153, 153); }
+#write > h6.md-focus::before { left: -1.5rem; top: 0.3125rem; color: rgb(153, 153, 153); border-color: rgb(153, 153, 153); }
+.md-toc:focus .md-toc-content { margin-top: 19px; }
+.md-toc-content:empty::before { color: rgb(6, 85, 136); }
+.md-toc-item { color: rgb(6, 85, 136); }
+#write div.md-toc-tooltip { background-color: rgb(243, 242, 238); }
+#outline-dropmenu { background-color: rgb(243, 242, 238); box-shadow: rgba(0, 0, 0, 0.372549) 0px 6px 12px; }
+.pin-outline #outline-dropmenu { background: inherit; box-shadow: none; border-right: 1px dashed; }
+.pin-outline #outline-dropmenu:hover .outline-title-wrapper { border-left: 1px dashed; }
+.outline-item:hover { background-color: rgb(218, 218, 218); border-left: 28px solid rgb(218, 218, 218); border-right: 18px solid rgb(218, 218, 218); }
+.typora-node .outline-item:hover { border-right: 28px solid rgb(218, 218, 218); }
+.outline-expander::before { content: ""; font-family: FontAwesome; font-size: 14px; top: 1px; }
+.outline-expander:hover::before, .outline-item-open > .outline-item > .outline-expander::before { content: ""; }
+.modal-content { background-color: rgb(243, 242, 238); }
+.auto-suggest-container ul li { list-style-type: none; }
+.megamenu-menu, #top-titlebar, #top-titlebar *, .megamenu-content { background: rgb(243, 242, 238); color: rgb(31, 9, 9); }
+.megamenu-menu-header { border-bottom: 1px dashed rgb(32, 43, 51); }
+.megamenu-menu { box-shadow: none; border-right: 1px dashed; }
+header, .context-menu, .megamenu-content, footer { font-family: "PT Serif", "Times New Roman", Times; color: rgb(31, 9, 9); }
+#megamenu-back-btn { color: rgb(31, 9, 9); border-color: rgb(31, 9, 9); }
+.megamenu-menu-header #megamenu-menu-header-title::before { color: rgb(31, 9, 9); }
+.megamenu-menu-list li a:hover, .megamenu-menu-list li a.active { color: inherit; background-color: rgb(232, 231, 223); }
+.long-btn:hover { background-color: rgb(232, 231, 223); }
+#recent-file-panel tbody tr:nth-child(2n-1) { background-color: transparent !important; }
+.megamenu-menu-panel tbody tr:hover td:nth-child(2) { color: inherit; }
+.megamenu-menu-panel .btn { background-color: rgb(210, 209, 209); }
+.btn-default { background-color: transparent; }
+.typora-sourceview-on #toggle-sourceview-btn, .show-word-count #footer-word-count { background: rgb(199, 197, 197); }
+#typora-quick-open { background-color: inherit; }
+.md-diagram-panel { margin-left: -1ch; margin-top: 24px; }
+
+
+
+
+
+
+</style>
+</head>
+<body class='typora-export' >
+<div  id='write'  class = 'is-node'><h1><a name='header-c1' class='md-header-anchor '></a>Python for Data Analysis</h1><h2><a name='header-c6' class='md-header-anchor '></a>Week 10: time series</h2><p>课程内容：</p><ol start='' ><li>处理时间序列</li><li>数据可视化</li></ol><h1><a name='header-c15' class='md-header-anchor '></a>处理时间序列</h1><p>由于 Pandas 最初是为金融模型而创建的，因此它拥有一些功能非常强大的日期、时间、带时间索引数据的处理工具。日期与时间数据主要包含三类：</p><ul><li>时间戳表示某个具体的时间点（例如 2018 年 12 月 16 日上午 7点）。</li><li>时间间隔与周期表示开始时间点与结束时间点之间的时间长度，例如 2018 年（指的是 2018 年 1 月 1 日至 2018 年 12 月 31 日这段时间间隔）。周期通常是指一种特殊形式的时间间隔，每个间隔长度相同，彼此之间不会重叠（例如，以 24 小时为周期构成每一天）。</li><li>时间增量（time delta）或持续时间（duration）表示精确的时间长度（例如，某程序运行持续时间 22.56 秒）。</li></ul><h2><a name='header-c28' class='md-header-anchor '></a>1. Python的日期与时间工具</h2><p>在 Python 标准库与第三方库中有许多可以表示日期、时间、时间增量和时间跨度（timespan）的工具。尽管 Pandas 提供的时间序列工具更适合用来处理数据科学问题，但是了解 Pandas 与 Python 标准库以及第三方库中的其他时间序列工具之间的关联性将大有裨益。</p><h2><a name='header-c31' class='md-header-anchor '></a>原生Python的日期与时间工具：datetime</h2><p>Python 基本的日期与时间功能都在标准库的 datetime 模块中。</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure">AخA</div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-comment"># Python自带datetime 库 介绍</span></span></pre></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">from</span> <span class="cm-variable">datetime</span> <span class="cm-keyword">import</span> <span class="cm-variable">datetime</span> <span class="cm-keyword">as</span> <span class="cm-variable">dt</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">from</span> <span class="cm-variable">datetime</span> <span class="cm-keyword">import</span> <span class="cm-variable">timedelta</span> <span class="cm-keyword">as</span> <span class="cm-variable">tmdlt</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-builtin">help</span>(<span class="cm-variable">dt</span>)</span></pre></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 96px;"></div></div></div></pre><pre class='md-fences mock-cm' style='display:block;position:relative'>Help on class datetime in module datetime:</pre><pre class='md-fences mock-cm' style='display:block;position:relative'>class datetime(date)
+ |  datetime(year, month, day[, hour[, minute[, second[, microsecond[,tzinfo]]]]])
+ |  
+ |  The year, month and day arguments are required. tzinfo may be None, or an
+ |  instance of a tzinfo subclass. The remaining arguments may be ints.
+ |  
+ |  Method resolution order:
+ |      datetime
+ |      date
+ |      builtins.object
+ |  
+ |  Methods defined here:
+ |  
+ |  __add__(self, value, /)
+ |      Return self+value.
+ |  
+ |  __eq__(self, value, /)
+ |      Return self==value.
+ |  
+ |  __ge__(self, value, /)
+ |      Return self&gt;=value.
+ |  
+ |  __getattribute__(self, name, /)
+ |      Return getattr(self, name).
+ |  
+ |  __gt__(self, value, /)
+ |      Return self&gt;value.
+ |  
+ |  __hash__(self, /)
+ |      Return hash(self).
+ |  
+ |  __le__(self, value, /)
+ |      Return self&lt;=value.
+ |  
+ |  __lt__(self, value, /)
+ |      Return self&lt;value.
+ |  
+ |  __ne__(self, value, /)
+ |      Return self!=value.
+ |  
+ |  __radd__(self, value, /)
+ |      Return value+self.
+ |  
+ |  __reduce__(...)
+ |      __reduce__() -&gt; (cls, state)
+ |  
+ |  __reduce_ex__(...)
+ |      __reduce_ex__(proto) -&gt; (cls, state)
+ |  
+ |  __repr__(self, /)
+ |      Return repr(self).
+ |  
+ |  __rsub__(self, value, /)
+ |      Return value-self.
+ |  
+ |  __str__(self, /)
+ |      Return str(self).
+ |  
+ |  __sub__(self, value, /)
+ |      Return self-value.
+ |  
+ |  astimezone(...)
+ |      tz -&gt; convert to local time in new timezone tz
+ |  
+ |  ctime(...)
+ |      Return ctime() style string.
+ |  
+ |  date(...)
+ |      Return date object with same year, month and day.
+ |  
+ |  dst(...)
+ |      Return self.tzinfo.dst(self).
+ |  
+ |  isoformat(...)
+ |      [sep] -&gt; string in ISO 8601 format, YYYY-MM-DDT[HH[:MM[:SS[.mmm[uuu]]]]][+HH:MM].
+ |      sep is used to separate the year from the time, and defaults to &#39;T&#39;.
+ |      timespec specifies what components of the time to include (allowed values are &#39;auto&#39;, &#39;hours&#39;, &#39;minutes&#39;, &#39;seconds&#39;, &#39;milliseconds&#39;, and &#39;microseconds&#39;).
+ |  
+ |  replace(...)
+ |      Return datetime with new specified fields.
+ |  
+ |  time(...)
+ |      Return time object with same time but with tzinfo=None.
+ |  
+ |  timestamp(...)
+ |      Return POSIX timestamp as float.
+ |  
+ |  timetuple(...)
+ |      Return time tuple, compatible with time.localtime().
+ |  
+ |  timetz(...)
+ |      Return time object with same time and tzinfo.
+ |  
+ |  tzname(...)
+ |      Return self.tzinfo.tzname(self).
+ |  
+ |  utcoffset(...)
+ |      Return self.tzinfo.utcoffset(self).
+ |  
+ |  utctimetuple(...)
+ |      Return UTC time tuple, compatible with time.localtime().
+ |  
+ |  ----------------------------------------------------------------------
+ |  Class methods defined here:
+ |  
+ |  combine(...) from builtins.type
+ |      date, time -&gt; datetime with same date and time fields
+ |  
+ |  fromisoformat(...) from builtins.type
+ |      string -&gt; datetime from datetime.isoformat() output
+ |  
+ |  fromtimestamp(...) from builtins.type
+ |      timestamp[, tz] -&gt; tz&#39;s local time from POSIX timestamp.
+ |  
+ |  now(tz=None) from builtins.type
+ |      Returns new datetime object representing current time local to tz.
+ |      
+ |        tz
+ |          Timezone object.
+ |      
+ |      If no tz is specified, uses local timezone.
+ |  
+ |  strptime(...) from builtins.type
+ |      string, format -&gt; new datetime parsed from a string (like time.strptime()).
+ |  
+ |  utcfromtimestamp(...) from builtins.type
+ |      Construct a naive UTC datetime from a POSIX timestamp.
+ |  
+ |  utcnow(...) from builtins.type
+ |      Return a new datetime representing UTC day and time.
+ |  
+ |  ----------------------------------------------------------------------
+ |  Static methods defined here:
+ |  
+ |  __new__(*args, **kwargs) from builtins.type
+ |      Create and return a new object.  See help(type) for accurate signature.
+ |  
+ |  ----------------------------------------------------------------------
+ |  Data descriptors defined here:
+ |  
+ |  fold
+ |  
+ |  hour
+ |  
+ |  microsecond
+ |  
+ |  minute
+ |  
+ |  second
+ |  
+ |  tzinfo
+ |  
+ |  ----------------------------------------------------------------------
+ |  Data and other attributes defined here:
+ |  
+ |  max = datetime.datetime(9999, 12, 31, 23, 59, 59, 999999)
+ |  
+ |  min = datetime.datetime(1, 1, 1, 0, 0)
+ |  
+ |  resolution = datetime.timedelta(microseconds=1)
+ |  
+ |  ----------------------------------------------------------------------
+ |  Methods inherited from date:
+ |  
+ |  __format__(...)
+ |      Formats self with strftime.
+ |  
+ |  isocalendar(...)
+ |      Return a 3-tuple containing ISO year, week number, and weekday.
+ |  
+ |  isoweekday(...)
+ |      Return the day of the week represented by the date.
+ |      Monday == 1 ... Sunday == 7
+ |  
+ |  strftime(...)
+ |      format -&gt; strftime() style string.
+ |  
+ |  toordinal(...)
+ |      Return proleptic Gregorian ordinal.  January 1 of year 1 is day 1.
+ |  
+ |  weekday(...)
+ |      Return the day of the week represented by the date.
+ |      Monday == 0 ... Sunday == 6
+ |  
+ |  ----------------------------------------------------------------------
+ |  Class methods inherited from date:
+ |  
+ |  fromisocalendar(...) from builtins.type
+ |      int, int, int -&gt; Construct a date from the ISO year, week number and weekday.
+ |      
+ |      This is the inverse of the date.isocalendar() function
+ |  
+ |  fromordinal(...) from builtins.type
+ |      int -&gt; date corresponding to a proleptic Gregorian ordinal.
+ |  
+ |  today(...) from builtins.type
+ |      Current date or datetime:  same as self.__class__.fromtimestamp(time.time()).
+ |  
+ |  ----------------------------------------------------------------------
+ |  Data descriptors inherited from date:
+ |  
+ |  day
+ |  
+ |  month
+ |  
+ |  year</pre><p>  <br/></p><h3><a name='header-c41' class='md-header-anchor '></a>用 datetime 类型创建一个日期</h3><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-comment"># 获取现在日期和时间</span></span></pre></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">now</span> = <span class="cm-variable">dt</span>.<span class="cm-property">today</span>()</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">print</span>(<span class="cm-variable">now</span>)</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">print</span>(<span class="cm-builtin">type</span>(<span class="cm-variable">now</span>))</span></pre></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 96px;"></div></div></div></pre><pre class='md-fences mock-cm' style='display:block;position:relative'>2020-11-23 20:09:46.629049
+&lt;class &#39;datetime.datetime&#39;&gt;</pre><p></p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-comment"># 生成一个日期</span></span></pre></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">dt</span>(<span class="cm-variable">year</span>=<span class="cm-number">2018</span>, <span class="cm-variable">month</span>=<span class="cm-number">12</span>, <span class="cm-variable">day</span>=<span class="cm-number">16</span>)</span></pre></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 48px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>datetime.datetime(2018, 12, 16, 0, 0)</pre><p></p><p></p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-comment"># 明天的此时此刻</span></span></pre></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">now</span> <span class="cm-operator">+</span> <span class="cm-number">1</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 48px;"></div></div></div></pre><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-comment"># timedelta 时间间隔</span></span></pre></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-builtin">help</span>(<span class="cm-variable">tmdlt</span>)</span></pre></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 48px;"></div></div></div></pre><pre class='md-fences mock-cm' style='display:block;position:relative'>Help on class timedelta in module datetime:</pre><pre class='md-fences mock-cm' style='display:block;position:relative'>class timedelta(builtins.object)
+ |  Difference between two datetime values.
+ |  
+ |  timedelta(days=0, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)
+ |  
+ |  All arguments are optional and default to 0.
+ |  Arguments may be integers or floats, and may be positive or negative.
+ |  
+ |  Methods defined here:
+ |  
+ |  __abs__(self, /)
+ |      abs(self)
+ |  
+ |  __add__(self, value, /)
+ |      Return self+value.
+ |  
+ |  __bool__(self, /)
+ |      self != 0
+ |  
+ |  __divmod__(self, value, /)
+ |      Return divmod(self, value).
+ |  
+ |  __eq__(self, value, /)
+ |      Return self==value.
+ |  
+ |  __floordiv__(self, value, /)
+ |      Return self//value.
+ |  
+ |  __ge__(self, value, /)
+ |      Return self&gt;=value.
+ |  
+ |  __getattribute__(self, name, /)
+ |      Return getattr(self, name).
+ |  
+ |  __gt__(self, value, /)
+ |      Return self&gt;value.
+ |  
+ |  __hash__(self, /)
+ |      Return hash(self).
+ |  
+ |  __le__(self, value, /)
+ |      Return self&lt;=value.
+ |  
+ |  __lt__(self, value, /)
+ |      Return self&lt;value.
+ |  
+ |  __mod__(self, value, /)
+ |      Return self%value.
+ |  
+ |  __mul__(self, value, /)
+ |      Return self*value.
+ |  
+ |  __ne__(self, value, /)
+ |      Return self!=value.
+ |  
+ |  __neg__(self, /)
+ |      -self
+ |  
+ |  __pos__(self, /)
+ |      +self
+ |  
+ |  __radd__(self, value, /)
+ |      Return value+self.
+ |  
+ |  __rdivmod__(self, value, /)
+ |      Return divmod(value, self).
+ |  
+ |  __reduce__(...)
+ |      __reduce__() -&gt; (cls, state)
+ |  
+ |  __repr__(self, /)
+ |      Return repr(self).
+ |  
+ |  __rfloordiv__(self, value, /)
+ |      Return value//self.
+ |  
+ |  __rmod__(self, value, /)
+ |      Return value%self.
+ |  
+ |  __rmul__(self, value, /)
+ |      Return value*self.
+ |  
+ |  __rsub__(self, value, /)
+ |      Return value-self.
+ |  
+ |  __rtruediv__(self, value, /)
+ |      Return value/self.
+ |  
+ |  __str__(self, /)
+ |      Return str(self).
+ |  
+ |  __sub__(self, value, /)
+ |      Return self-value.
+ |  
+ |  __truediv__(self, value, /)
+ |      Return self/value.
+ |  
+ |  total_seconds(...)
+ |      Total seconds in the duration.
+ |  
+ |  ----------------------------------------------------------------------
+ |  Static methods defined here:
+ |  
+ |  __new__(*args, **kwargs) from builtins.type
+ |      Create and return a new object.  See help(type) for accurate signature.
+ |  
+ |  ----------------------------------------------------------------------
+ |  Data descriptors defined here:
+ |  
+ |  days
+ |      Number of days.
+ |  
+ |  microseconds
+ |      Number of microseconds (&gt;= 0 and less than 1 second).
+ |  
+ |  seconds
+ |      Number of seconds (&gt;= 0 and less than 1 day).
+ |  
+ |  ----------------------------------------------------------------------
+ |  Data and other attributes defined here:
+ |  
+ |  max = datetime.timedelta(days=999999999, seconds=86399, microseconds=9...
+ |  
+ |  min = datetime.timedelta(days=-999999999)
+ |  
+ |  resolution = datetime.timedelta(microseconds=1)</pre><p>  <br/></p><h4><a name='header-c64' class='md-header-anchor '></a>练习</h4><p>计算 2000年1月20日 100天后，日期是哪天？</p><h3><a name='header-c68' class='md-header-anchor '></a>将不同格式的日期输入、输出</h3><p>两个作用完全相反的方法：</p><ul><li>strftime(format), 日期--&gt; 字符串，将时间日期数据，按照要求的格式输出为字符串</li><li>strptime(date_string, format)，字符串--&gt; 日期，将不同格式的字符串生成一个时间日期数据</li></ul><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-comment"># 今天是星期几</span></span></pre></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">now</span>.<span class="cm-property">strftime</span>(<span class="cm-string">'%A'</span>)</span></pre></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 48px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>&#39;Monday&#39;</pre><p></p><p></p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-comment"># 用 yyyymmdd格式显示今天日期</span></span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>&#39;20201123&#39;</pre><p></p><p>在最后一行代码中，为了打印出是星期几，我们使用了一个标准字符串格式（standard string format）代码 &quot;%A&quot;，你可以在 Python 的datetime 文档（<a href='https://docs.python.org/3/library/datetime.html' target='_blank' >https://docs.python.org/3/library/datetime.html</a> ）的“strftime”节（<a href='https://docs.python.org/3/library/datetime.html#strftime-and-strptimebehavior' target='_blank' >https://docs.python.org/3/library/datetime.html#strftime-and-strptimebehavior</a> ）查看具体信息。</p><h4><a name='header-c96' class='md-header-anchor '></a>练习</h4><ol start='' ><li>分别用以下格式生成一个日期时间类型时间</li></ol><pre class='md-fences mock-cm' style='display:block;position:relative'>2020,05,07
+18 Jan 1990
+1992/May/7, 07:58</pre><ol start='2' ><li>将上述最后一个时间日期，以下面的格式print出来</li></ol><p>XX年X月X日，X点X分</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><span><span>​</span>x</span></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>&#39;1992年05月07日, 7点58分&#39;</pre><p></p><h4><a name='header-c119' class='md-header-anchor '></a>几个常用的Python第三方日期时间包</h4><p>由于时间关系本课程不做介绍，可自学</p><ol start='' ><li>第三方库 dateutil 也是一个针对日期和时间进行处理的package,可以与datetime 模块搭配使用，可以快速实现许多处理日期与时间的功能。 关于 dateutil 的其他日期功能可以通过 dateutil 的在线文档（<a href='http://labix.org/python-dateutil' target='_blank' >http://labix.org/python-dateutil</a> ）学习。</li><li>还有一个值得关注的程序包是 pytz（<a href='http://pytz.sourceforge.net/' target='_blank' >http://pytz.sourceforge.net/</a> ），这个工具解决了绝大多数时间序列数据都会遇到的难题：时区。</li></ol><h3><a name='header-c129' class='md-header-anchor '></a>NumPy时间序列类型</h3><p>datetime 和 dateutil 模块在灵活性与易用性方面都表现出色，
+你可以用这些对象及其相应的方法轻松完成你感兴趣的任意操作。
+但如果你处理的时间数据量比较大，那么速度就会比较慢。就像之
+前介绍过的 Python 的原生列表对象没有 NumPy 中已经被编码的数
+值类型数组的性能好一样，Python 的原生日期对象同样也没有
+NumPy 中已经被编码的日期（encoded dates）类型数组的性能好。</p><p>Python 原生日期格式的性能弱点促使 NumPy 团队为 NumPy 增加了
+自己的时间序列类型。 datetime64 类型将日期编码为 64 位整
+数，这样可以让日期数组非常紧凑（节省内存）。 datetime64 需
+要在设置日期时确定具体的输入类型：</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">import</span> <span class="cm-variable">numpy</span> <span class="cm-keyword">as</span> <span class="cm-variable">np</span></span></pre></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">date</span> = <span class="cm-variable">np</span>.<span class="cm-property">array</span>(<span class="cm-string">'2018-12-16'</span>, <span class="cm-variable">dtype</span>=<span class="cm-variable">np</span>.<span class="cm-property">datetime64</span>)</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-comment"># date = np.array('2018-12-16')</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">date</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 96px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>array(&#39;2018-12-16&#39;, dtype=&#39;datetime64[D]&#39;)</pre><p></p><p>只要有了这个日期格式，就可以进行快速的向量化运算：</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">date</span> <span class="cm-operator">+</span> <span class="cm-variable">np</span>.<span class="cm-property">arange</span>(<span class="cm-number">20</span>)</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>array([&#39;2018-12-16&#39;, &#39;2018-12-17&#39;, &#39;2018-12-18&#39;, &#39;2018-12-19&#39;,
+       &#39;2018-12-20&#39;, &#39;2018-12-21&#39;, &#39;2018-12-22&#39;, &#39;2018-12-23&#39;,
+       &#39;2018-12-24&#39;, &#39;2018-12-25&#39;, &#39;2018-12-26&#39;, &#39;2018-12-27&#39;,
+       &#39;2018-12-28&#39;, &#39;2018-12-29&#39;, &#39;2018-12-30&#39;, &#39;2018-12-31&#39;,
+       &#39;2019-01-01&#39;, &#39;2019-01-02&#39;, &#39;2019-01-03&#39;, &#39;2019-01-04&#39;],
+      dtype=&#39;datetime64[D]&#39;)</pre><p></p><p>因为 NumPy 的 datetime64 数组内元素的类型是统一的，所以这种数组的运算速度会比 Python 的 datetime 对象的运算速度快很多，尤其是在处理较大数组时。</p><p>datetime64 与 timedelta64 对象的一个共同特点是，它们都是在基本时间单位（fundamental time unit）的基础上建立的。由于datetime64 对象是 64 位精度，所以可编码的时间范围可以是基本单元的 2**64 倍。也就是说，datetime64 在时间精度（time resolution）与最大时间跨度（maximum time span）之间达成了一种平衡。</p><p>比如你想要一个时间纳秒（nanosecond，ns）级的时间精度，那么你就可以将时间编码到 0~264 纳秒或 600 年之内，NumPy 会自动判断输入时间需要使用的时间单位。例如，下面是一个以天为单位的日期：</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">np</span>.<span class="cm-property">datetime64</span>(<span class="cm-string">'2020-03-16'</span>)</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>numpy.datetime64(&#39;2020-03-16&#39;)</pre><p></p><p>而这是一个以分钟为单位的日期：</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">np</span>.<span class="cm-property">datetime64</span>(<span class="cm-string">'2020-03-16 12:00'</span>)</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>numpy.datetime64(&#39;2020-03-16T12:00&#39;)</pre><p></p><p>需要注意的是，时区将自动设置为执行代码的操作系统的当地时区。你可以通过各种格式的代码设置基本时间单位。例如，将时间单位设置为纳秒：</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">np</span>.<span class="cm-property">datetime64</span>(<span class="cm-string">'2018-12-16 12:59:59.50'</span>, <span class="cm-string">'ns'</span>)</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>numpy.datetime64(&#39;2018-12-16T12:59:59.500000000&#39;)</pre><p></p><p>NumPy 的 datetime64 文档（<a href='http://docs.scipy.org/doc/numpy/reference/arrays.datetime.html' target='_blank' >http://docs.scipy.org/doc/numpy/reference/arrays.datetime.html</a> ）总结了所有支持相对与绝对时间跨度的时间与日期单位格式代码，下表对此总结如下：</p><table><thead><tr><th>代码</th><th>含义</th><th>时间跨度 (相对)</th><th>时间跨度 (绝对)</th></tr></thead><tbody><tr><td>Y</td><td>年（year）</td><td>± 9.2e18</td><td>年[9.2e18 BC, 9.2e18 AD]</td></tr><tr><td>M</td><td>月（month）</td><td>± 7.6e17</td><td>年[7.6e17 BC, 7.6e17 AD]</td></tr><tr><td>W</td><td>周（week）</td><td>± 1.7e17</td><td>年[1.7e17 BC, 1.7e17 AD]</td></tr><tr><td>D</td><td>日（day）</td><td>± 2.5e16</td><td>年[2.5e16 BC, 2.5e16 AD]</td></tr><tr><td>h</td><td>时（hour）</td><td>± 1.0e15</td><td>年[1.0e15 BC, 1.0e15 AD]</td></tr><tr><td>m</td><td>分（minute）</td><td>± 1.7e13</td><td>年[1.7e13 BC, 1.7e13 AD]</td></tr><tr><td>s</td><td>秒（second）</td><td>± 2.9e12</td><td>年[ 2.9e9 BC, 2.9e9 AD]</td></tr><tr><td>ms</td><td>毫秒（millisecond）</td><td>± 2.9e9</td><td>年[ 2.9e6 BC, 2.9e6 AD]</td></tr><tr><td>us</td><td>微秒（microsecond）</td><td>± 2.9e6</td><td>年[290301 BC, 294241 AD]</td></tr><tr><td>ns</td><td>纳秒（nanosecond）</td><td>± 292</td><td>年[ 1678 AD, 2262 AD]</td></tr><tr><td>ps</td><td>皮秒（picosecond）</td><td>± 106</td><td>天[ 1969 AD, 1970 AD]</td></tr><tr><td>fs</td><td>飞秒（femtosecond）</td><td>± 2.6</td><td>小时[ 1969 AD, 1970 AD]</td></tr><tr><td>as</td><td>原秒（attosecond）</td><td>± 9.2</td><td>秒[ 1969 AD, 1970 AD]</td></tr></tbody></table><p>对于日常工作中的时间数据类型，默认单位都用纳秒datetime64[ns]，因为用它来表示时间范围精度可以满足绝大部分需求。</p><h3><a name='header-c269' class='md-header-anchor '></a>Pandas的日期与时间工具：理想与现实的最佳解决方案</h3><p>Pandas 所有关于日期与时间的处理方法全部都是通过 Timestamp对象实现的，它利用 numpy.datetime64 的有效存储和向量化接口将 datetime 和 dateutil 的易用性有机结合起来。Pandas 通过一组 Timestamp 对象就可以创建一个可以作为 Series 或DataFrame 索引的 DatetimeIndex，我们将在后面介绍许多类似的例子。</p><p>具体教程参见：<a href='https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html' target='_blank' >https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html</a></p><p>例如，可以用 Pandas 的方式演示前面介绍的日期与时间功能。我们可以灵活处理不同格式的日期与时间字符串，获取某一天是星期几：</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">import</span> <span class="cm-variable">pandas</span> <span class="cm-keyword">as</span> <span class="cm-variable">pd</span></span></pre></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">date</span> = <span class="cm-variable">pd</span>.<span class="cm-property">to_datetime</span>(<span class="cm-string">"16th of December, 2018"</span>)</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">date</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 72px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>Timestamp(&#39;2018-12-16 00:00:00&#39;)</pre><p></p><p></p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">date</span>.<span class="cm-property">strftime</span>(<span class="cm-string">'%A'</span>)</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>&#39;Sunday&#39;</pre><p></p><p>另外，也可以直接进行 NumPy 类型的向量化运算：</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">date</span> <span class="cm-operator">+</span> <span class="cm-variable">pd</span>.<span class="cm-property">to_timedelta</span>(<span class="cm-variable">np</span>.<span class="cm-property">arange</span>(<span class="cm-number">12</span>), <span class="cm-string">'D'</span>)</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>DatetimeIndex([&#39;2018-12-16&#39;, &#39;2018-12-17&#39;, &#39;2018-12-18&#39;, &#39;2018-12-19&#39;,
+               &#39;2018-12-20&#39;, &#39;2018-12-21&#39;, &#39;2018-12-22&#39;, &#39;2018-12-23&#39;,
+               &#39;2018-12-24&#39;, &#39;2018-12-25&#39;, &#39;2018-12-26&#39;, &#39;2018-12-27&#39;],
+              dtype=&#39;datetime64[ns]&#39;, freq=None)</pre><p></p><h2><a name='header-c303' class='md-header-anchor '></a>2. Pandas时间序列：用时间作索引</h2><p>Pandas 时间序列工具非常适合用来处理带时间戳的索引数据。例如，我们可以通过一个时间索引数据创建一个 Series 对象：</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">index</span> = <span class="cm-variable">pd</span>.<span class="cm-property">DatetimeIndex</span>([<span class="cm-string">'2014-07-04'</span>, <span class="cm-string">'2014-08-04'</span>,<span class="cm-string">'2015-07-04'</span>, <span class="cm-string">'2015-08-04'</span>])</span></pre></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">data</span> = <span class="cm-variable">pd</span>.<span class="cm-property">Series</span>([<span class="cm-number">0</span>, <span class="cm-number">1</span>, <span class="cm-number">2</span>, <span class="cm-number">3</span>], <span class="cm-variable">index</span>=<span class="cm-variable">index</span>)</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">data</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 96px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>2014-07-04    0
+2014-08-04    1
+2015-07-04    2
+2015-08-04    3
+dtype: int64</pre><p></p><p>有了一个带时间索引的 Series 之后，就能用它来演示之前介绍过的Series 取值方法，可以直接用日期进行切片取值：</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">data</span>[<span class="cm-string">'2014-07-04'</span>:<span class="cm-string">'2015-07-04'</span>]</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>2014-07-04    0
+2014-08-04    1
+2015-07-04    2
+dtype: int64</pre><p></p><p>另外，还有一些仅在此类 Series 上可用的取值操作，例如直接通过年份切片获取该年的数据：</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">data</span>[<span class="cm-string">'2015'</span>]</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>2015-07-04    2
+2015-08-04    3
+dtype: int64</pre><p></p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">import</span> <span class="cm-variable">tushare</span> <span class="cm-keyword">as</span> <span class="cm-variable">ts</span></span></pre></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">stockDF</span> = <span class="cm-variable">ts</span>.<span class="cm-property">get_hist_data</span>(<span class="cm-string">'603970'</span>, <span class="cm-variable">start</span>=<span class="cm-string">'2018-01-01'</span>)</span></pre></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 48px;"></div></div></div></pre><pre class='md-fences mock-cm' style='display:block;position:relative'>本接口即将停止更新，请尽快使用Pro版接口：https://waditu.com/document/2</pre><p>  <br/></p><h4><a name='header-c339' class='md-header-anchor '></a>tushare package</h4><p>是国内较早也较为完整的一个股票市场相关信息包。上面所展示的数据获取，是通过他们的普通接口来获取的，但是近期，普通API已经不再维护（仍然可用）。</p><p>如果使用较多的话，建议注册（免费）采用pro接口，具体信息见：<a href='https://waditu.com/' target='_blank' >https://waditu.com/</a></p><p>两个接口代码略有不同，</p><pre class='md-fences mock-cm' style='display:block;position:relative'>pro = ts.pro_api(字符串形式的token)
+stockDF = pro.daily(ts_code=&#39;603970.SH&#39;, start_date=&#39;20190701&#39;)</pre><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">stockDF</span></span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><p></p><p><div>
+<style scoped></p><pre class='md-fences mock-cm' style='display:block;position:relative'>.dataframe tbody tr th:only-of-type {
+    vertical-align: middle;
+}
+
+.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}</pre><p></style>
+<table border="1" class="dataframe">
+  <thead></p><pre class='md-fences mock-cm' style='display:block;position:relative'>&lt;tr style=&quot;text-align: right;&quot;&gt;
+  &lt;th&gt;&lt;/th&gt;
+  &lt;th&gt;open&lt;/th&gt;
+  &lt;th&gt;high&lt;/th&gt;
+  &lt;th&gt;close&lt;/th&gt;
+  &lt;th&gt;low&lt;/th&gt;
+  &lt;th&gt;volume&lt;/th&gt;
+  &lt;th&gt;price_change&lt;/th&gt;
+  &lt;th&gt;p_change&lt;/th&gt;
+  &lt;th&gt;ma5&lt;/th&gt;
+  &lt;th&gt;ma10&lt;/th&gt;
+  &lt;th&gt;ma20&lt;/th&gt;
+  &lt;th&gt;v_ma5&lt;/th&gt;
+  &lt;th&gt;v_ma10&lt;/th&gt;
+  &lt;th&gt;v_ma20&lt;/th&gt;
+  &lt;th&gt;turnover&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;date&lt;/th&gt;
+  &lt;th&gt;&lt;/th&gt;
+  &lt;th&gt;&lt;/th&gt;
+  &lt;th&gt;&lt;/th&gt;
+  &lt;th&gt;&lt;/th&gt;
+  &lt;th&gt;&lt;/th&gt;
+  &lt;th&gt;&lt;/th&gt;
+  &lt;th&gt;&lt;/th&gt;
+  &lt;th&gt;&lt;/th&gt;
+  &lt;th&gt;&lt;/th&gt;
+  &lt;th&gt;&lt;/th&gt;
+  &lt;th&gt;&lt;/th&gt;
+  &lt;th&gt;&lt;/th&gt;
+  &lt;th&gt;&lt;/th&gt;
+  &lt;th&gt;&lt;/th&gt;
+&lt;/tr&gt;</pre><p>  </thead>
+  <tbody></p><pre class='md-fences mock-cm' style='display:block;position:relative'>&lt;tr&gt;
+  &lt;th&gt;2020-11-23&lt;/th&gt;
+  &lt;td&gt;19.09&lt;/td&gt;
+  &lt;td&gt;19.88&lt;/td&gt;
+  &lt;td&gt;19.70&lt;/td&gt;
+  &lt;td&gt;19.00&lt;/td&gt;
+  &lt;td&gt;53169.93&lt;/td&gt;
+  &lt;td&gt;0.62&lt;/td&gt;
+  &lt;td&gt;3.25&lt;/td&gt;
+  &lt;td&gt;18.856&lt;/td&gt;
+  &lt;td&gt;18.154&lt;/td&gt;
+  &lt;td&gt;17.226&lt;/td&gt;
+  &lt;td&gt;68702.48&lt;/td&gt;
+  &lt;td&gt;54169.32&lt;/td&gt;
+  &lt;td&gt;35019.81&lt;/td&gt;
+  &lt;td&gt;5.57&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;2020-11-20&lt;/th&gt;
+  &lt;td&gt;18.76&lt;/td&gt;
+  &lt;td&gt;19.30&lt;/td&gt;
+  &lt;td&gt;19.08&lt;/td&gt;
+  &lt;td&gt;18.60&lt;/td&gt;
+  &lt;td&gt;39240.23&lt;/td&gt;
+  &lt;td&gt;0.08&lt;/td&gt;
+  &lt;td&gt;0.42&lt;/td&gt;
+  &lt;td&gt;18.486&lt;/td&gt;
+  &lt;td&gt;17.815&lt;/td&gt;
+  &lt;td&gt;17.050&lt;/td&gt;
+  &lt;td&gt;66352.32&lt;/td&gt;
+  &lt;td&gt;50819.03&lt;/td&gt;
+  &lt;td&gt;33059.17&lt;/td&gt;
+  &lt;td&gt;4.11&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;2020-11-19&lt;/th&gt;
+  &lt;td&gt;18.82&lt;/td&gt;
+  &lt;td&gt;20.00&lt;/td&gt;
+  &lt;td&gt;19.00&lt;/td&gt;
+  &lt;td&gt;18.56&lt;/td&gt;
+  &lt;td&gt;100417.93&lt;/td&gt;
+  &lt;td&gt;0.12&lt;/td&gt;
+  &lt;td&gt;0.64&lt;/td&gt;
+  &lt;td&gt;18.156&lt;/td&gt;
+  &lt;td&gt;17.530&lt;/td&gt;
+  &lt;td&gt;16.920&lt;/td&gt;
+  &lt;td&gt;64471.80&lt;/td&gt;
+  &lt;td&gt;48480.01&lt;/td&gt;
+  &lt;td&gt;31894.37&lt;/td&gt;
+  &lt;td&gt;10.51&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;2020-11-18&lt;/th&gt;
+  &lt;td&gt;17.50&lt;/td&gt;
+  &lt;td&gt;18.88&lt;/td&gt;
+  &lt;td&gt;18.88&lt;/td&gt;
+  &lt;td&gt;17.45&lt;/td&gt;
+  &lt;td&gt;72634.04&lt;/td&gt;
+  &lt;td&gt;1.26&lt;/td&gt;
+  &lt;td&gt;7.15&lt;/td&gt;
+  &lt;td&gt;17.820&lt;/td&gt;
+  &lt;td&gt;17.248&lt;/td&gt;
+  &lt;td&gt;16.792&lt;/td&gt;
+  &lt;td&gt;50111.13&lt;/td&gt;
+  &lt;td&gt;39572.82&lt;/td&gt;
+  &lt;td&gt;27368.06&lt;/td&gt;
+  &lt;td&gt;7.60&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;2020-11-17&lt;/th&gt;
+  &lt;td&gt;17.80&lt;/td&gt;
+  &lt;td&gt;18.15&lt;/td&gt;
+  &lt;td&gt;17.62&lt;/td&gt;
+  &lt;td&gt;17.02&lt;/td&gt;
+  &lt;td&gt;78050.25&lt;/td&gt;
+  &lt;td&gt;-0.23&lt;/td&gt;
+  &lt;td&gt;-1.29&lt;/td&gt;
+  &lt;td&gt;17.486&lt;/td&gt;
+  &lt;td&gt;16.939&lt;/td&gt;
+  &lt;td&gt;16.683&lt;/td&gt;
+  &lt;td&gt;43096.10&lt;/td&gt;
+  &lt;td&gt;33380.46&lt;/td&gt;
+  &lt;td&gt;24453.81&lt;/td&gt;
+  &lt;td&gt;8.17&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;...&lt;/th&gt;
+  &lt;td&gt;...&lt;/td&gt;
+  &lt;td&gt;...&lt;/td&gt;
+  &lt;td&gt;...&lt;/td&gt;
+  &lt;td&gt;...&lt;/td&gt;
+  &lt;td&gt;...&lt;/td&gt;
+  &lt;td&gt;...&lt;/td&gt;
+  &lt;td&gt;...&lt;/td&gt;
+  &lt;td&gt;...&lt;/td&gt;
+  &lt;td&gt;...&lt;/td&gt;
+  &lt;td&gt;...&lt;/td&gt;
+  &lt;td&gt;...&lt;/td&gt;
+  &lt;td&gt;...&lt;/td&gt;
+  &lt;td&gt;...&lt;/td&gt;
+  &lt;td&gt;...&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;2018-06-01&lt;/th&gt;
+  &lt;td&gt;26.55&lt;/td&gt;
+  &lt;td&gt;27.90&lt;/td&gt;
+  &lt;td&gt;26.35&lt;/td&gt;
+  &lt;td&gt;26.30&lt;/td&gt;
+  &lt;td&gt;72053.98&lt;/td&gt;
+  &lt;td&gt;0.22&lt;/td&gt;
+  &lt;td&gt;0.84&lt;/td&gt;
+  &lt;td&gt;26.744&lt;/td&gt;
+  &lt;td&gt;26.744&lt;/td&gt;
+  &lt;td&gt;26.744&lt;/td&gt;
+  &lt;td&gt;67268.16&lt;/td&gt;
+  &lt;td&gt;67268.16&lt;/td&gt;
+  &lt;td&gt;67268.16&lt;/td&gt;
+  &lt;td&gt;21.62&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;2018-05-31&lt;/th&gt;
+  &lt;td&gt;25.01&lt;/td&gt;
+  &lt;td&gt;26.35&lt;/td&gt;
+  &lt;td&gt;26.16&lt;/td&gt;
+  &lt;td&gt;25.01&lt;/td&gt;
+  &lt;td&gt;75553.66&lt;/td&gt;
+  &lt;td&gt;-0.97&lt;/td&gt;
+  &lt;td&gt;-3.58&lt;/td&gt;
+  &lt;td&gt;26.843&lt;/td&gt;
+  &lt;td&gt;26.843&lt;/td&gt;
+  &lt;td&gt;26.843&lt;/td&gt;
+  &lt;td&gt;66071.70&lt;/td&gt;
+  &lt;td&gt;66071.70&lt;/td&gt;
+  &lt;td&gt;66071.70&lt;/td&gt;
+  &lt;td&gt;22.67&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;2018-05-30&lt;/th&gt;
+  &lt;td&gt;27.45&lt;/td&gt;
+  &lt;td&gt;28.98&lt;/td&gt;
+  &lt;td&gt;27.11&lt;/td&gt;
+  &lt;td&gt;27.03&lt;/td&gt;
+  &lt;td&gt;109443.12&lt;/td&gt;
+  &lt;td&gt;-0.04&lt;/td&gt;
+  &lt;td&gt;-0.15&lt;/td&gt;
+  &lt;td&gt;27.070&lt;/td&gt;
+  &lt;td&gt;27.070&lt;/td&gt;
+  &lt;td&gt;27.070&lt;/td&gt;
+  &lt;td&gt;62911.05&lt;/td&gt;
+  &lt;td&gt;62911.05&lt;/td&gt;
+  &lt;td&gt;62911.05&lt;/td&gt;
+  &lt;td&gt;32.83&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;2018-05-29&lt;/th&gt;
+  &lt;td&gt;26.79&lt;/td&gt;
+  &lt;td&gt;27.79&lt;/td&gt;
+  &lt;td&gt;27.06&lt;/td&gt;
+  &lt;td&gt;26.28&lt;/td&gt;
+  &lt;td&gt;38311.70&lt;/td&gt;
+  &lt;td&gt;0.03&lt;/td&gt;
+  &lt;td&gt;0.11&lt;/td&gt;
+  &lt;td&gt;27.050&lt;/td&gt;
+  &lt;td&gt;27.050&lt;/td&gt;
+  &lt;td&gt;27.050&lt;/td&gt;
+  &lt;td&gt;39645.01&lt;/td&gt;
+  &lt;td&gt;39645.01&lt;/td&gt;
+  &lt;td&gt;39645.01&lt;/td&gt;
+  &lt;td&gt;11.49&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;th&gt;2018-05-28&lt;/th&gt;
+  &lt;td&gt;27.71&lt;/td&gt;
+  &lt;td&gt;28.13&lt;/td&gt;
+  &lt;td&gt;27.04&lt;/td&gt;
+  &lt;td&gt;26.81&lt;/td&gt;
+  &lt;td&gt;40978.32&lt;/td&gt;
+  &lt;td&gt;-0.60&lt;/td&gt;
+  &lt;td&gt;-2.17&lt;/td&gt;
+  &lt;td&gt;27.040&lt;/td&gt;
+  &lt;td&gt;27.040&lt;/td&gt;
+  &lt;td&gt;27.040&lt;/td&gt;
+  &lt;td&gt;40978.32&lt;/td&gt;
+  &lt;td&gt;40978.32&lt;/td&gt;
+  &lt;td&gt;40978.32&lt;/td&gt;
+  &lt;td&gt;12.29&lt;/td&gt;
+&lt;/tr&gt;</pre><p>  </tbody>
+</table>
+<p>607 rows × 14 columns</p>
+</div></p><p></p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">stockDF</span>[<span class="cm-string">'2018'</span>] <span class="cm-comment"># will return error</span></span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><h4><a name='header-c373' class='md-header-anchor '></a>练习</h4><p>将stockDF的index修改为datetime数据类型</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><h2><a name='header-c380' class='md-header-anchor '></a>3. Pandas时间序列数据结构</h2><p>这里将介绍 Pandas 用来处理时间序列的基础数据类型。</p><ul><li>针对时间戳数据，Pandas 提供了 <font color=red>Timestamp</font> 类型。与前面介绍的一样，它本质上是 Python 的原生 datetime 类型的替代品，但是在性能更好的 numpy.datetime64 类型的基础上创建。对应的索引数据结构是 DatetimeIndex。</li><li>针对时间周期数据，Pandas 提供了 <font color=red>Period</font> 类型。这是利用numpy.datetime64 类型将固定频率的时间间隔进行编码。对应的索引数据结构是 PeriodIndex。</li><li>针对时间增量或持续时间，Pandas 提供了 <font color=red>Timedelta</font> 类型。Timedelta 是一种代替 Python 原生 datetime.timedelta 类型的高性能数据结构，同样是基于 numpy.timedelta64 类型。对应的索引数据结构是 TimedeltaIndex。</li></ul><p>最基础的日期 / 时间对象是 Timestamp 和 DatetimeIndex。这两种对象可以直接使用，最常用的方法是 pd.to_datetime() 函数，它可以解析许多日期与时间格式。对 pd.to_datetime() 传递一个日期会返回一个 Timestamp 类型，传递一个时间序列会返回一个DatetimeIndex 类型：</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">dates</span> = <span class="cm-variable">pd</span>.<span class="cm-property">to_datetime</span>([<span class="cm-variable">dt</span>(<span class="cm-number">2015</span>, <span class="cm-number">7</span>, <span class="cm-number">3</span>), </span></pre></div><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  <span class="cm-string">'4th of July, 2015'</span>,<span class="cm-string">'2015-Jul-6'</span>, </span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  <span class="cm-string">'07-07-2015'</span>, <span class="cm-string">'20150708'</span>])</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">dates</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 96px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>DatetimeIndex([&#39;2015-07-03&#39;, &#39;2015-07-04&#39;, &#39;2015-07-06&#39;, &#39;2015-07-07&#39;,
+               &#39;2015-07-08&#39;],
+              dtype=&#39;datetime64[ns]&#39;, freq=None)</pre><p></p><p>任何 DatetimeIndex 类型都可以通过 to_period() 方法和一个频率代码转换成 PeriodIndex 类型。下面用 &#39;D&#39; 将数据转换成单日的时间序列：</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">dates</span>.<span class="cm-property">to_period</span>(<span class="cm-string">'D'</span>)</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>PeriodIndex([&#39;2015-07-03&#39;, &#39;2015-07-04&#39;, &#39;2015-07-06&#39;, &#39;2015-07-07&#39;,
+             &#39;2015-07-08&#39;],
+            dtype=&#39;period[D]&#39;, freq=&#39;D&#39;)</pre><p></p><p>当用一个日期减去另一个日期时，返回的结果是 TimedeltaIndex 类型：</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">dates</span> <span class="cm-operator">-</span> <span class="cm-variable">dates</span>[<span class="cm-number">0</span>]</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>TimedeltaIndex([&#39;0 days&#39;, &#39;1 days&#39;, &#39;3 days&#39;, &#39;4 days&#39;, &#39;5 days&#39;], dtype=&#39;timedelta64[ns]&#39;, freq=None)</pre><p></p><p>为了能更简便地创建有规律的时间序列，Pandas 提供了一些方法：pd.date_range() 可以处理时间戳、pd.period_range() 可以处理周期、pd.timedelta_range() 可以处理时间间隔。我们已经知道，Python 的 range() 和 NumPy 的 np.arange() 可以用起点、终点和步长（可选的）创建一个序列。pd.date_range() 与之类似，通过开始日期、结束日期和频率代码（同样是可选的）创建一个有规律的日期序列，默认的频率是天：</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">pd</span>.<span class="cm-property">date_range</span>(<span class="cm-string">'2015-07-03'</span>, <span class="cm-string">'2015-07-10'</span>)</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>DatetimeIndex([&#39;2015-07-03&#39;, &#39;2015-07-04&#39;, &#39;2015-07-05&#39;, &#39;2015-07-06&#39;,
+               &#39;2015-07-07&#39;, &#39;2015-07-08&#39;, &#39;2015-07-09&#39;, &#39;2015-07-10&#39;],
+              dtype=&#39;datetime64[ns]&#39;, freq=&#39;D&#39;)</pre><p></p><p>此外，日期范围不一定非是开始时间与结束时间，也可以是开始时间与周期数 periods：</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">pd</span>.<span class="cm-property">date_range</span>(<span class="cm-string">'2015-07-03'</span>, <span class="cm-variable">periods</span>=<span class="cm-number">8</span>)</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>DatetimeIndex([&#39;2015-07-03&#39;, &#39;2015-07-04&#39;, &#39;2015-07-05&#39;, &#39;2015-07-06&#39;,
+               &#39;2015-07-07&#39;, &#39;2015-07-08&#39;, &#39;2015-07-09&#39;, &#39;2015-07-10&#39;],
+              dtype=&#39;datetime64[ns]&#39;, freq=&#39;D&#39;)</pre><p></p><p>你可以通过 freq 参数改变时间间隔，默认值是 D。例如，可以创建一个按小时变化的时间戳：</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">pd</span>.<span class="cm-property">date_range</span>(<span class="cm-string">'2015-07-03'</span>, <span class="cm-variable">periods</span>=<span class="cm-number">8</span>, <span class="cm-variable">freq</span>=<span class="cm-string">'H'</span>)</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>DatetimeIndex([&#39;2015-07-03 00:00:00&#39;, &#39;2015-07-03 01:00:00&#39;,
+               &#39;2015-07-03 02:00:00&#39;, &#39;2015-07-03 03:00:00&#39;,
+               &#39;2015-07-03 04:00:00&#39;, &#39;2015-07-03 05:00:00&#39;,
+               &#39;2015-07-03 06:00:00&#39;, &#39;2015-07-03 07:00:00&#39;],
+              dtype=&#39;datetime64[ns]&#39;, freq=&#39;H&#39;)</pre><p></p><p>如果要创建一个有规律的周期或时间间隔序列，有类似的函数pd.period_range() 和 pd.timedelta_range()。下面是一个以月为周期的示例：</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">pd</span>.<span class="cm-property">period_range</span>(<span class="cm-string">'2015-07'</span>, <span class="cm-variable">periods</span>=<span class="cm-number">8</span>, <span class="cm-variable">freq</span>=<span class="cm-string">'M'</span>)</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>PeriodIndex([&#39;2015-07&#39;, &#39;2015-08&#39;, &#39;2015-09&#39;, &#39;2015-10&#39;, &#39;2015-11&#39;, &#39;2015-12&#39;,
+             &#39;2016-01&#39;, &#39;2016-02&#39;],
+            dtype=&#39;period[M]&#39;, freq=&#39;M&#39;)</pre><p></p><p>以及一个以小时递增的序列：</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">pd</span>.<span class="cm-property">timedelta_range</span>(<span class="cm-number">0</span>, <span class="cm-variable">periods</span>=<span class="cm-number">10</span>, <span class="cm-variable">freq</span>=<span class="cm-string">'H'</span>)</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>TimedeltaIndex([&#39;00:00:00&#39;, &#39;01:00:00&#39;, &#39;02:00:00&#39;, &#39;03:00:00&#39;, &#39;04:00:00&#39;,
+                &#39;05:00:00&#39;, &#39;06:00:00&#39;, &#39;07:00:00&#39;, &#39;08:00:00&#39;, &#39;09:00:00&#39;],
+               dtype=&#39;timedelta64[ns]&#39;, freq=&#39;H&#39;)</pre><p></p><h2><a name='header-c473' class='md-header-anchor '></a>4. 时间频率与偏移量</h2><p>Pandas 时间序列工具的基础是时间频率或偏移量（offset）代码。就像之前见过的 D（day）和 H（hour）代码，我们可以用这些代码设置任意需要的时间间隔。下表总结了主要的频率代码：</p><table><thead><tr><th>代码</th><th>描述</th><th>代码</th><th>描述</th></tr></thead><tbody><tr><td>D</td><td>天（calendar day，按日历算，含双休日）</td><td>B</td><td>天（business day，仅含工作日）</td></tr><tr><td>W</td><td>周（weekly）</td><td></td><td></td></tr><tr><td>M</td><td>月末（month end）</td><td>BM</td><td>月末（business month end，仅含工作日）</td></tr><tr><td>Q</td><td>季末（quarter end）</td><td>BQ</td><td>季末（business quarter end，仅含工作日）</td></tr><tr><td>A</td><td>年末（year end）</td><td>BA</td><td>年末（business year end，仅含工作日）</td></tr><tr><td>H</td><td>小时（hours）</td><td>BH</td><td>小时（business hours，工作时间）</td></tr><tr><td>T</td><td>分钟（minutes）</td><td></td><td></td></tr><tr><td>S</td><td>秒（seconds）</td><td></td><td></td></tr><tr><td>L</td><td>毫秒（milliseonds）</td><td></td><td></td></tr><tr><td>U</td><td>微秒（microseconds）</td><td></td><td></td></tr><tr><td>N</td><td>纳秒（nanoseconds）</td><td></td><td></td></tr></tbody></table><p>月、季、年频率都是具体周期的结束时间（月末、季末、年末），而有一些以 S（start，开始）为后缀的代码表示日期开始（如下表所示）。</p><table><thead><tr><th>代码</th><th>频率</th></tr></thead><tbody><tr><td>MS</td><td>月初（month start）</td></tr><tr><td>BMS</td><td>月初（business month start，仅含工作日）</td></tr><tr><td>QS</td><td>季初（quarter start）</td></tr><tr><td>BQS</td><td>季初（business quarter start，仅含工作日）</td></tr><tr><td>AS</td><td>年初（year start）</td></tr><tr><td>BAS</td><td>年初（business year start，仅含工作日）</td></tr></tbody></table><p>另外，你可以在频率代码后面加三位月份缩写字母来改变季、年频率的开始时间。</p><ul><li>Q-JAN、BQ-FEB、QS-MAR、BQS-APR 等。</li><li>A-JAN、BA-FEB、AS-MAR、BAS-APR 等。</li></ul><p>同理，也可以在后面加三位星期缩写字母来改变一周的开始时间。</p><ul><li>W-SUN、W-MON、W-TUE、W-WED 等。</li></ul><p>在这些代码的基础上，还可以将频率组合起来创建的新的周期。例如，
+可以用小时（H）和分钟（T）的组合来实现 2 小时 30 分钟：</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">pd</span>.<span class="cm-property">timedelta_range</span>(<span class="cm-number">0</span>, <span class="cm-variable">periods</span>=<span class="cm-number">9</span>, <span class="cm-variable">freq</span>=<span class="cm-string">"2H30T"</span>)</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>TimedeltaIndex([&#39;00:00:00&#39;, &#39;02:30:00&#39;, &#39;05:00:00&#39;, &#39;07:30:00&#39;, &#39;10:00:00&#39;,
+                &#39;12:30:00&#39;, &#39;15:00:00&#39;, &#39;17:30:00&#39;, &#39;20:00:00&#39;],
+               dtype=&#39;timedelta64[ns]&#39;, freq=&#39;150T&#39;)</pre><p></p><p>所有这些频率代码都对应 Pandas 时间序列的偏移量，具体内容可以在
+pd.tseries.offsets 模块中找到。例如，可以用下面的方法直接创建
+一个工作日偏移序列：</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">from</span> <span class="cm-variable">pandas</span>.<span class="cm-property">tseries</span>.<span class="cm-property">offsets</span> <span class="cm-keyword">import</span> <span class="cm-variable">BDay</span></span></pre></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">pd</span>.<span class="cm-property">date_range</span>(<span class="cm-string">'2015-07-01'</span>, <span class="cm-variable">periods</span>=<span class="cm-number">5</span>, <span class="cm-variable">freq</span>=<span class="cm-variable">BDay</span>())</span></pre></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 48px;"></div></div></div></pre><p></p><pre class='md-fences mock-cm' style='display:block;position:relative'>DatetimeIndex([&#39;2015-07-01&#39;, &#39;2015-07-02&#39;, &#39;2015-07-03&#39;, &#39;2015-07-06&#39;,
+               &#39;2015-07-07&#39;],
+              dtype=&#39;datetime64[ns]&#39;, freq=&#39;B&#39;)</pre><p></p><h3><a name='header-c599' class='md-header-anchor '></a>时间迁移</h3><p>另一种常用的时间序列操作是对数据按时间进行迁移。Pandas 有两种解决这类问题的方法：shift() 和 tshift()。简单来说，shift() 就是迁移数据，而 tshift() 就是迁移索引。两种方法都是按照频率代码进行迁移。下面我们将用 shift() 和 tshift() 这两种方法让数据迁移 900天</p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">fig</span>, <span class="cm-variable">ax</span> = <span class="cm-variable">plt</span>.<span class="cm-property">subplots</span>(<span class="cm-number">3</span>, <span class="cm-variable">sharey</span>=<span class="cm-builtin">True</span>)</span></pre></div><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">fig</span>.<span class="cm-property">subplots_adjust</span>(<span class="cm-variable">hspace</span>=<span class="cm-number">0.4</span>, <span class="cm-variable">wspace</span>=<span class="cm-number">0.4</span>)</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-comment"># 对数据应用时间频率，用向后填充解决缺失值</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">stock</span> = <span class="cm-variable">stock</span>.<span class="cm-property">asfreq</span>(<span class="cm-string">'D'</span>, <span class="cm-variable">method</span>=<span class="cm-string">'pad'</span>)</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">stock</span>.<span class="cm-property">plot</span>(<span class="cm-variable">ax</span>=<span class="cm-variable">ax</span>[<span class="cm-number">0</span>])</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">stock</span>.<span class="cm-property">shift</span>(<span class="cm-number">900</span>).<span class="cm-property">plot</span>(<span class="cm-variable">ax</span>=<span class="cm-variable">ax</span>[<span class="cm-number">1</span>])</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">stock</span>.<span class="cm-property">tshift</span>(<span class="cm-number">900</span>).<span class="cm-property">plot</span>(<span class="cm-variable">ax</span>=<span class="cm-variable">ax</span>[<span class="cm-number">2</span>])</span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-comment"># 设置图例与标签</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">local_max</span> = <span class="cm-variable">pd</span>.<span class="cm-property">to_datetime</span>(<span class="cm-string">'2008-01-02'</span>)</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">offset</span> = <span class="cm-variable">pd</span>.<span class="cm-property">Timedelta</span>(<span class="cm-number">900</span>, <span class="cm-string">'D'</span>)</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">ax</span>[<span class="cm-number">0</span>].<span class="cm-property">legend</span>([<span class="cm-string">'input'</span>], <span class="cm-variable">loc</span>=<span class="cm-number">2</span>)</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">ax</span>[<span class="cm-number">0</span>].<span class="cm-property">get_xticklabels</span>()[<span class="cm-number">4</span>].<span class="cm-property">set</span>(<span class="cm-variable">weight</span>=<span class="cm-string">'heavy'</span>, <span class="cm-variable">color</span>=<span class="cm-string">'red'</span>)</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">ax</span>[<span class="cm-number">0</span>].<span class="cm-property">axvline</span>(<span class="cm-variable">local_max</span>, <span class="cm-variable">alpha</span>=<span class="cm-number">0.3</span>, <span class="cm-variable">color</span>=<span class="cm-string">'red'</span>)</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">ax</span>[<span class="cm-number">1</span>].<span class="cm-property">legend</span>([<span class="cm-string">'shift(900)'</span>], <span class="cm-variable">loc</span>=<span class="cm-number">2</span>)</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">ax</span>[<span class="cm-number">1</span>].<span class="cm-property">get_xticklabels</span>()[<span class="cm-number">4</span>].<span class="cm-property">set</span>(<span class="cm-variable">weight</span>=<span class="cm-string">'heavy'</span>, <span class="cm-variable">color</span>=<span class="cm-string">'red'</span>)</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">ax</span>[<span class="cm-number">1</span>].<span class="cm-property">axvline</span>(<span class="cm-variable">local_max</span> <span class="cm-operator">+</span> <span class="cm-variable">offset</span>, <span class="cm-variable">alpha</span>=<span class="cm-number">0.3</span>, <span class="cm-variable">color</span>=<span class="cm-string">'red'</span>)</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">ax</span>[<span class="cm-number">2</span>].<span class="cm-property">legend</span>([<span class="cm-string">'tshift(900)'</span>], <span class="cm-variable">loc</span>=<span class="cm-number">2</span>)</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">ax</span>[<span class="cm-number">2</span>].<span class="cm-property">get_xticklabels</span>()[<span class="cm-number">2</span>].<span class="cm-property">set</span>(<span class="cm-variable">weight</span>=<span class="cm-string">'heavy'</span>, <span class="cm-variable">color</span>=<span class="cm-string">'red'</span>)</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">ax</span>[<span class="cm-number">2</span>].<span class="cm-property">axvline</span>(<span class="cm-variable">local_max</span> <span class="cm-operator">+</span> <span class="cm-variable">offset</span>, <span class="cm-variable">alpha</span>=<span class="cm-number">0.3</span>, <span class="cm-variable">color</span>=<span class="cm-string">'red'</span>);</span></pre></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 480px;"></div></div></div></pre><h4><a name='header-c604' class='md-header-anchor '></a>练习</h4><ol start='' ><li>计算股票的日收益率？</li><li>计算股票一年期的投资回报率</li></ol><h3><a name='header-c612' class='md-header-anchor '></a>练习</h3><p>画出股票代码为603970.SH的股票，在2020年05月18日5分钟均值走势图。</p><p></p><pre class="md-fences md-end-block" lang="python"> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 0px;"></div><div class="CodeMirror-gutters" style="display: none; height: 24px;"></div></div></div></pre><p>Ref: 本次课内容主要是基于Zhilong Xie老师的课件而完成的</p></div>
+</body>
+</html>

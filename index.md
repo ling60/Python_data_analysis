@@ -36,3 +36,23 @@ Currently (2020.9.5) all notes will be written in Chinese.
 
 ### [Lecture 5](html_sildes\Week5_function_filerw.html)
 本次课程内容主要为介绍Python里面的函数和文件读写的部分
+
+### [Lecture 6](html_sildes\Week6_pandasIntro.html)
+
+主要内容为介绍Pandas
+
+### [Lecture 7](html_sildes\Week7_datacleaning.html)
+
+主要内容为介绍如何对数字类型的数据进行清理
+
+### [Lecture 8](html_sildes\Week8_datamerge_plotting.html)
+
+主要内容除了继续介绍数据清理外，还讨论了如何画图
+
+### [Lecture 9](html_sildes\Week9_plotting_groupby.html)
+
+主要介绍了数据合并和GroupBy
+
+### [Lecture10](html_sildes\Week10_timeseries.html)
+
+主要讲解了时间序列数据的分析过程

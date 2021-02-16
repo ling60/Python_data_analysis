@@ -1,3 +1,0 @@
-\contentsline {chapter}{\numberline {1}Data Analytica Models}{1}{chapter.1}
-\contentsline {section}{\numberline {1.1}Statistical Models}{1}{section.1.1}
-\contentsline {subsection}{\numberline {1.1.1}Simple OLS}{1}{subsection.1.1.1}
