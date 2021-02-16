@@ -19,8 +19,8 @@ Currently (2020.9.5) all notes will be written in Chinese.
 ### [Lecture 1](\html_sildes\Week1_intro.html)
 
 本期课程主要目的是为大家简单的介绍数据科学这个领域，Python的简单用法，以及对课程进行一些简单的介绍。
-- [Anaconda的安装方法](..\help_docs\Anaconda_installsetup.html)
-- [Jupyter Notebook教程](..\help_docs\Jnb_tutorial.html)
+- [Anaconda的安装方法](help_docs\Anaconda_installsetup.html)
+- [Jupyter Notebook教程](help_docs\Jnb_tutorial.html)
 
 ### [Lecture 2](html_sildes\Week2_python_variables.html)
 
