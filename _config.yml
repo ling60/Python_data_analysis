@@ -6,3 +6,4 @@ defaults:
       path: "" # an empty string here means all files in the project
     values:
       theme: jekyll-theme-slate
+theme: jekyll-theme-slate
