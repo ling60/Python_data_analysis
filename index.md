@@ -16,43 +16,43 @@ Currently (2020.9.5) all notes will be written in Chinese.
 
 ## 目录：
 
-### [Lecture 1](html_sildes\Week1_intro.html)
+### [Lecture 1](..\html_sildes\Week1_intro.html)
 
 本期课程主要目的是为大家简单的介绍数据科学这个领域，Python的简单用法，以及对课程进行一些简单的介绍。
-- [Anaconda的安装方法](help_docs\Anaconda_installsetup.html)
-- [Jupyter Notebook教程](help_docs\Jnb_tutorial.html)
+- [Anaconda的安装方法](..\help_docs\Anaconda_installsetup.html)
+- [Jupyter Notebook教程](..\help_docs\Jnb_tutorial.html)
 
-### [Lecture 2](html_sildes\Week2_python_variables.html)
+### [Lecture 2](..\html_sildes\Week2_python_variables.html)
 
 这次课程的内容主要为回顾Python的基础数据类型
 
 
-### [Lecture 3](html_sildes\Week3_text_analysis.html)
+### [Lecture 3](..\html_sildes\Week3_text_analysis.html)
 
 这次课程内容主要是介绍数据清理中，文本数据的清理部分，即文本分析相关内容
 
-### [Lecture 4](html_sildes\Week4_dataaccess.html)
+### [Lecture 4](..\html_sildes\Week4_dataaccess.html)
 这次课程的内容是讲解数据获取的一些相关问题，如有哪些常见数据库，以及基础的网络爬虫的介绍
 
-### [Lecture 5](html_sildes\Week5_function_filerw.html)
+### [Lecture 5](..\html_sildes\Week5_function_filerw.html)
 本次课程内容主要为介绍Python里面的函数和文件读写的部分
 
-### [Lecture 6](html_sildes\Week6_pandasIntro.html)
+### [Lecture 6](..\html_sildes\Week6_pandasIntro.html)
 
 主要内容为介绍Pandas
 
-### [Lecture 7](html_sildes\Week7_datacleaning.html)
+### [Lecture 7](..\html_sildes\Week7_datacleaning.html)
 
 主要内容为介绍如何对数字类型的数据进行清理
 
-### [Lecture 8](html_sildes\Week8_datamerge_plotting.html)
+### [Lecture 8](..\html_sildes\Week8_datamerge_plotting.html)
 
 主要内容除了继续介绍数据清理外，还讨论了如何画图
 
-### [Lecture 9](html_sildes\Week9_plotting_groupby.html)
+### [Lecture 9](..\html_sildes\Week9_plotting_groupby.html)
 
 主要介绍了数据合并和GroupBy
 
-### [Lecture10](html_sildes\Week10_timeseries.html)
+### [Lecture 10](..\html_sildes\Week10_timeseries.html)
 
 主要讲解了时间序列数据的分析过程
