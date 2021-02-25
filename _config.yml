@@ -2,6 +2,4 @@ defaults:
   - scope:
       path: "" # an empty string here means all files in the project
     values:
-      layout: "default"
-
-theme: jekyll-theme-slate
+      layout: default
