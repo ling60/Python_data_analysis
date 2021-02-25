@@ -1,5 +1,5 @@
 # Python for Data Science
-## Week 15 Analytical Models -- Statsmodles
+## Week 11 Analytical Models -- Statsmodles
 
 In this lecture, we will talk about how to use Python to analyze data via statistical models. 
 Basically we will provide an overview of the two most commonly used packages in Python **Statsmodles**.
@@ -423,12 +423,12 @@ resafter = callols(After, 'Temp', 'Gas')
 
 ### How should we presents results?
 
-| | Model 1 (before) | Model 2 (After)|
-|---------|--------|------|
-|Temp Coef|-0.3932 |-0.2779 |
-|Temp p-value|0.000 | 0.000|
-|Temp std err|0.020 | 0.025|
-|R^2|  0.944 |0.813 |
+|              | Model 1 (before) | Model 2 (After) |
+| ------------ | ---------------- | --------------- |
+| Temp Coef    | -0.3932          | -0.2779         |
+| Temp p-value | 0.000            | 0.000           |
+| Temp std err | 0.020            | 0.025           |
+| R^2          | 0.944            | 0.813           |
 
 
 
@@ -501,31 +501,4 @@ model = sm.OLS(whiteside['Gas'], x)
 
 res_all = model.fit()
 print(res_all.summary())
-```
-
-
-```python
-
-```
-
-
-```python
-
-```
-
-
-```python
-
-```
-
-下述方法可以获取结果中的主要参数
-
-
-```python
-
-```
-
-
-```python
-# 练习，添加常数项后，再次运行回归方程，并且得到相关的参数
 ```

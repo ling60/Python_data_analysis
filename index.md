@@ -56,3 +56,11 @@ Currently (2020.9.5) all notes will be written in Chinese.
 ### [Lecture 10](html_slides\Week10_timeseries.html)
 
 主要讲解了时间序列数据的分析过程
+
+### [Lecture 11](html_slides\Week11_analytical_model_statsmodels.html)
+
+主要讲解了如何利用Python完成计量和统计相关的模型分析，主要内容为statsmodels, and stargazer包
+
+### [Lecture 12](html_slides\Week12_scikit-Learn.html)
+
+主要讲解了基础的如何利用Python做机器学习模型的分析，主要为sciikit-learn包
