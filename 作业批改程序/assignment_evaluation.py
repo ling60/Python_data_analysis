@@ -61,10 +61,16 @@ def extract_to_one_folder(ori_file_folder, py_files='py_files', create_marks_fil
 
     # 生成成绩文件
     if create_marks_file:
-        marks = pd.DataFrame(columns=['stu_id', 'mark', 'comment'])
-        marks['stu_id'] = list(set(stu_ids))
-        marks.to_csv(mark_file, index=False, encoding='utf8')
-        print('Mark file created in {} as {}'.format(os.getcwd(), mark_file))
+        # 判断是否需要重新生成mark file
+        if os.path.exists(mark_file):
+            overwrite = input('{} already exists, please press y to overwrite'.format(mark_file))
+            if overwrite == 'y':
+                marks = pd.DataFrame(columns=['stu_id', 'mark', 'comment'])
+                marks['stu_id'] = list(set(stu_ids))
+                marks.sort_values('stu_id').to_csv(mark_file, index=False, encoding='utf8')
+                print('Mark file created in {} as {}'.format(os.getcwd(), mark_file))
+            else:
+                print('Mark file not created')
 
 
 def check_code_similarity(py_files):
@@ -113,51 +119,56 @@ def evaluate_code(py_files, mark_file, run_all_files=False, run_files=False):
     # 准备运行学生代码
     input('回车开始运行代码。。。')
     for pfile in files_to_run:
-        stu_id = pfile.split('-')[0]
-        print(stu_id)
-        if marks.loc[marks['stu_id'] == stu_id, 'mark'].notnull().any():
-            remark = input('这个学生成绩已给出{}，是否重新打分？是（y），否（n）'.format(marks.loc[marks['stu_id'] == stu_id, 'mark'].item))
-            if remark == 'n':
+        try:
+            stu_id = pfile.split('-')[0]
+            print(stu_id)
+            if marks.loc[marks['stu_id'] == stu_id, 'mark'].notnull().any():
+                remark = input('这个学生成绩已给出{}，是否重新打分？是（y），否（n）'.format(marks.loc[marks['stu_id'] == stu_id, 'mark'].item))
+                if remark == 'n':
+                    continue
+                else:
+                    marks.drop(marks[marks.stu_id == stu_id].index, inplace=True)
+
+            print('即将运行', stu_id, '作业 ', pfile)
+
+            # 打开学生代码文件，并print
+            with open(os.path.join(py_files, pfile), "r", encoding='utf-8') as ff:
+                code = ff.read()
+            print(code)  # 将代码print出来
+
+            # 根据代码判断是否需要运行
+            runCode = input(
+                '是否运行该代码? 终止程序：请输入"quit", 无需运行，请输入n。 运行代码：直接回车或所有其他输入: ')
+
+            if runCode == 'quit':
+                break
+            elif runCode == 'n':
                 continue
             else:
-                marks.drop(marks[marks.stu_id == stu_id].index, inplace=True)
+                try:
+                    exec(code, globals())
 
-        print('Trying to run', stu_id, 'assignment, named ', pfile)
+                # 如果运行程序报错，自动给60分
+                except Exception as e:
+                    print(e)
+                    marks.loc[marks['stu_id'] == stu_id, ['mark', 'comment']] = [60, '代码报错']
+                    print('mark saved for ', stu_id, 60, '代码报错')
+                    continue
 
-        # 打开学生代码文件，并print
-        with open(os.path.join(py_files, pfile), "r", encoding='utf-8') as ff:
-            code = ff.read()
-        print(code)  # 将代码print出来
+            # 根据代码给出分数
+            mark = input('请给出' + stu_id + '作业分数：')
+            if mark != str(100):
+                # 如有需要给出评语
+                comment = input('评语（可不写，直接回车）')
+            else:
+                comment = None
+            # 将成绩加入marks
+            marks.loc[marks['stu_id'] == stu_id, ['mark', 'comment']] = [float(mark), comment]
+            print('mark added for ', stu_id, mark, comment)
 
-        # 根据代码判断是否需要运行
-        runCode = input(
-            '是否运行该代码? 终止程序：请输入"quit", 无需运行，请输入n。 运行代码：直接回车或所有其他输入: ')
-
-        if runCode == 'quit':
+        except Exception as e: # 避免学生的代码引起本程序运行错误，从而导致marks文档丢失
+            print(e)
             break
-        elif runCode == 'n':
-            continue
-        else:
-            try:
-                exec(code, globals())
-                # 根据代码给出分数
-                mark = input('请给出该作业分数：')
-
-                if mark != str(100):
-                    # 如有需要给出评语
-                    comment = input('评语（可不写，直接回车）')
-                else:
-                    comment = None
-
-                # 将成绩加入csv
-                marks.loc[marks['stu_id'] == stu_id, ['mark', 'comment']] = [float(mark), comment]
-                print('mark saved for ', stu_id, mark, comment)
-            # 如果运行程序报错，自动给60分
-            except Exception as e:
-                print(e)
-                marks.loc[marks['stu_id'] == stu_id, ['mark', 'comment']] = [60, '代码报错']
-                print('mark saved for ', stu_id, 60, '代码报错')
-                input('是否开始下一位同学的代码？')
 
     if marks[marks.duplicated(['stu_id'])] is True:
         print('以下学生成绩有重复情况，需要注意')
