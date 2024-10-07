@@ -13,7 +13,8 @@ def clean(text):
     '''
     clean text.
     '''
-    return re.sub('\W', ' ', text)
+    # return re.sub('\W', ' ', text)
+    return text.lower()
 
 
 def createFullDict(full_word_set):
