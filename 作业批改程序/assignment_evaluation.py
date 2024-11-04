@@ -2,6 +2,7 @@ import zipfile
 import os
 import CheckDuplicate
 import pandas as pd
+import numpy as np
 # import subprocess  #for run other python script
 # import pycode_similar  #另外一个可能的判断代码相似度的包
 
@@ -54,33 +55,23 @@ def extract_to_one_folder(ori_file_folder, py_files='py_files', create_marks_fil
                     # 记录已解压并复制的学号
                     copied.append(stu_id)
 
-    if copied:
-        print('Py files copied except', [stu for stu in stu_ids if stu not in copied])
-    else:
-        print('all files are copied')
-
-    # 生成成绩文件
+    print('{} py files copied except{}'.format(len(copied),  [stu for stu in stu_ids if stu not in copied]))
+# 生成成绩文件
     if create_marks_file:
         # 判断是否需要重新生成mark file
         if os.path.exists(mark_file):
             overwrite = input('{} already exists, please press y to overwrite'.format(mark_file))
-            if overwrite == 'y':
-                marks = pd.DataFrame(columns=['stu_id', 'mark', 'comment'])
-                marks['stu_id'] = list(set(stu_ids))
-                marks.sort_values('stu_id').to_csv(mark_file, index=False, encoding='utf8')
-                print('Mark file created in {} as {}'.format(os.getcwd(), mark_file))
-            else:
+            if overwrite != 'y':
                 print('Mark file not created')
+                return None
 
+        marks = pd.DataFrame(columns=['stu_id', 'name', 'mark', 'comment'])
+        stu_list = pd.read_csv('student_list.csv', dtype={'学号': str})
+        marks[['stu_id', 'name']] = stu_list[['学号', '姓名']]
 
-def check_code_similarity(py_files):
-    """
-    查重。需要把CheckDuplicate.py与当前代码放在同一个文件夹下。
-    :param py_files: 保存.py文件的文件夹
-    :return:
-    """
-    duplicate_set = CheckDuplicate.isDuplicate(py_files)
-    print(duplicate_set)
+        marks.to_csv(mark_file, index=False, encoding='utf8')
+        print('Mark file created in {} as {}'.format(os.getcwd(), mark_file))
+        print('The following students did not submit assignment', marks[~marks.stu_id.isin(set(stu_ids))])
 
 
 def evaluate_code(py_files, mark_file, run_all_files=False, run_files=False):
@@ -108,8 +99,6 @@ def evaluate_code(py_files, mark_file, run_all_files=False, run_files=False):
         stuid_torun = run_files
     # 如果未选择运行所有代码，则只运行目前没给成绩的
     else:
-        # 读取已有成绩文档，并删除未给成绩的记录
-        # 删除掉成绩为空，即此前没给分数的学生记录
         stuid_torun = marks[marks.mark.isnull()].values
 
     # 确定要运行的文件
@@ -121,15 +110,12 @@ def evaluate_code(py_files, mark_file, run_all_files=False, run_files=False):
     for pfile in files_to_run:
         try:
             stu_id = pfile.split('-')[0]
-            print(stu_id)
+            print('即将运行', stu_id, '作业 ', pfile)
+
             if marks.loc[marks['stu_id'] == stu_id, 'mark'].notnull().any():
                 remark = input('这个学生成绩已给出{}，是否重新打分？是（y），否（n）'.format(marks.loc[marks['stu_id'] == stu_id, 'mark'].item))
                 if remark == 'n':
                     continue
-                else:
-                    marks.drop(marks[marks.stu_id == stu_id].index, inplace=True)
-
-            print('即将运行', stu_id, '作业 ', pfile)
 
             # 打开学生代码文件，并print
             with open(os.path.join(py_files, pfile), "r", encoding='utf-8') as ff:
@@ -166,7 +152,7 @@ def evaluate_code(py_files, mark_file, run_all_files=False, run_files=False):
             marks.loc[marks['stu_id'] == stu_id, ['mark', 'comment']] = [float(mark), comment]
             print('mark added for ', stu_id, mark, comment)
 
-        except Exception as e: # 避免学生的代码引起本程序运行错误，从而导致marks文档丢失
+        except Exception as e:  # 避免学生的代码引起本程序运行错误，从而导致marks文档丢失
             print(e)
             break
 
@@ -180,13 +166,17 @@ def evaluate_code(py_files, mark_file, run_all_files=False, run_files=False):
 
 
 # 可以直接修改变量
-ori_file_folder = r'Week3'
+ori_file_folder = r'Week8'
 py_files = os.path.join(ori_file_folder, 'py_files')
 # 在当前代码文件夹下建立对应的marks文档
 mark_csv = os.path.join(ori_file_folder+'_marks.csv')
+
 # 第一步，解压并复制全部py文件到一个文件夹
-# extract_to_one_folder(ori_file_folder, py_files='py_files', create_marks_file=True, mark_file=mark_csv)
+extract_to_one_folder(ori_file_folder, py_files='py_files', create_marks_file=True, mark_file=mark_csv)
+
 # # 第二步，查重
-# check_code_similarity(py_files)
+# duplicate_set = CheckDuplicate.isDuplicate(py_files, MIN_COS_DIST=0.9, filetype='.py')
+# print(duplicate_set)
+
 # # 第三步，批改作业
 evaluate_code(py_files, mark_file=mark_csv)
